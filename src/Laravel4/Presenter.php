@@ -4,7 +4,6 @@ use Sofa\Revisionable\Presenter as AbstractPresenter;
 
 class Presenter extends AbstractPresenter
 {
-
     /**
      * Create a new revision presenter.
      *

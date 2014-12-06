@@ -5,7 +5,6 @@ use \App;
 
 trait RevisionableTrait
 {
-
     /**
      * Revisionable Logger instance.
      *

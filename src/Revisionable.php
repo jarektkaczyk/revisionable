@@ -2,7 +2,6 @@
 
 interface Revisionable
 {
-
     /**
      * Boot Revisionable Logger.
      *

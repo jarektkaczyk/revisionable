@@ -6,7 +6,6 @@ use Illuminate\Database\ConnectionInterface;
 
 class DbLogger implements Logger
 {
-
     /**
      * Custom database connection.
      *

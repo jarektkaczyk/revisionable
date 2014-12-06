@@ -6,7 +6,6 @@ use \Auth;
 
 class Listener implements ListenerInterface
 {
-
     /**
      * Handle created event.
      *

@@ -2,7 +2,6 @@
 
 abstract class Presenter
 {
-
     /**
      * Old attributes.
      *
