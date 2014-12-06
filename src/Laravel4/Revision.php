@@ -2,14 +2,19 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class Revision extends Model {
+class Revision extends Model
+{
 
-	public static function boot()
-	{
-		parent::boot();
+    /**
+     * {@inheritdoc}
+     */
+    public static function boot()
+    {
+        parent::boot();
 
-		// Make it read-only
-		static::saving(function () { return false; });
-	}
-
+        // Make it read-only
+        static::saving(function () {
+            return false;
+        });
+    }
 }
