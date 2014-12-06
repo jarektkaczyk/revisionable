@@ -1,6 +1,7 @@
 <?php namespace Sofa\Revisionable\Laravel4;
 
 use Sofa\Revisionable\Presenter as AbstractPresenter;
+use Illuminate\Config\Repository as Config;
 
 class Presenter extends AbstractPresenter
 {
@@ -9,11 +10,13 @@ class Presenter extends AbstractPresenter
      *
      * @param \Sofa\Revisionable\Revision|array $revision
      */
-    public function __construct($revision)
+    public function __construct($revision, Config $config)
     {
         if ($revision instanceof Revision) {
             $revision = $revision->getAttributes();
         }
+
+        $this->config = $config;
 
         parent::__construct($revision);
     }
@@ -26,15 +29,15 @@ class Presenter extends AbstractPresenter
         $html = '<div>';
 
         foreach ($this->getDiff() as $key => $values) {
-            $html .= Config::get('revisionable::templates.diff.start');
+            $html .= $this->config->get('revisionable::templates.diff.start');
 
             $html .= str_replace(
                 [':key', ':old', ':new'],
                 [$key, $this->old($key), $this->new($key)],
-                Config::get('revisionable::templates.diff.body')
+                $this->config->get('revisionable::templates.diff.body')
             );
 
-            $html .= Config::get('revisionable::templates.diff.end');
+            $html .= $this->config->get('revisionable::templates.diff.end');
         }
 
         $html .= '</div>';

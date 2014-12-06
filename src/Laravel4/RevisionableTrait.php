@@ -10,7 +10,7 @@ trait RevisionableTrait
      *
      * @var \Sofa\Revisionable\Logger
      */
-    protected static $revisionableLogger;
+    public static $revisionableLogger;
 
     /**
      * Revisioning switch.
@@ -80,7 +80,9 @@ trait RevisionableTrait
      */
     protected static function registerRestoredListener()
     {
-        static::restored('Sofa\Revisionable\Listener@onRestored');
+        if (method_exists(static::class, 'restored')) {
+            static::restored('Sofa\Revisionable\Listener@onRestored');
+        }
     }
 
     /**
@@ -100,7 +102,7 @@ trait RevisionableTrait
      *
      * @return array
      */
-    protected function getDiff()
+    public function getDiff()
     {
         $old = $this->getOldAttributes();
 
@@ -114,7 +116,7 @@ trait RevisionableTrait
      *
      * @return array
      */
-    protected function getOldAttributes()
+    public function getOldAttributes()
     {
         return $this->getRevisionableItems($this->original);
     }
@@ -124,7 +126,7 @@ trait RevisionableTrait
      *
      * @return array
      */
-    protected function getNewAttributes()
+    public function getNewAttributes()
     {
         return $this->getRevisionableItems($this->attributes);
     }
@@ -135,7 +137,7 @@ trait RevisionableTrait
      * @param  array  $values
      * @return array
      */
-    protected function getRevisionableItems(array $values)
+    public function getRevisionableItems(array $values)
     {
         if (count($this->getRevisionable()) > 0) {
             return array_intersect_key($values, array_flip($this->getRevisionable()));
@@ -161,7 +163,7 @@ trait RevisionableTrait
      *
      * @var array
      */
-    protected function getRevisionable()
+    public function getRevisionable()
     {
         return (isset($this->revisionable))
             ? (array) $this->revisionable
@@ -173,7 +175,7 @@ trait RevisionableTrait
      *
      * @var array
      */
-    protected function getNonRevisionable()
+    public function getNonRevisionable()
     {
         return (isset($this->nonRevisionable))
             ? (array) $this->nonRevisionable
@@ -185,7 +187,7 @@ trait RevisionableTrait
      *
      * @return boolean
      */
-    protected function isRevisioned()
+    public function isRevisioned()
     {
         return $this->revisioned;
     }

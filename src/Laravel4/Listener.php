@@ -1,7 +1,7 @@
 <?php namespace Sofa\Revisionable\Laravel4;
 
 use Sofa\Revisionable\Listener as ListenerInterface;
-use Illuminate\Databse\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model;
 use \Auth;
 
 class Listener implements ListenerInterface
@@ -11,9 +11,18 @@ class Listener implements ListenerInterface
      *
      * @param  mixed
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
-    public function onCreated(Model $model)
+    public function onCreated($model)
     {
+        if ( ! $model instanceof Model) {
+            throw new \InvalidArgumentException(
+                '$model must be of type Illuminate\Database\Eloquent\Model. '
+                . get_class($model) . ' given.'
+            );
+        }
+
         $type  = 'create';
         $table = $model->getTable();
         $id    = $model->getKey();
@@ -31,9 +40,18 @@ class Listener implements ListenerInterface
      *
      * @param  mixed
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
-    public function onUpdated(Model $model)
+    public function onUpdated($model)
     {
+        if ( ! $model instanceof Model) {
+            throw new \InvalidArgumentException(
+                '$model must be of type Illuminate\Database\Eloquent\Model. '
+                . get_class($model) . ' given.'
+            );
+        }
+
         if (empty($model->getDiff())) {
             return;
         }
@@ -55,9 +73,18 @@ class Listener implements ListenerInterface
      *
      * @param  mixed
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
-    public function onDeleted(Model $model)
+    public function onDeleted($model)
     {
+        if ( ! $model instanceof Model) {
+            throw new \InvalidArgumentException(
+                '$model must be of type Illuminate\Database\Eloquent\Model. '
+                . get_class($model) . ' given.'
+            );
+        }
+
         $type  = 'delete';
         $table = $model->getTable();
         $id    = $model->getKey();
@@ -75,20 +102,27 @@ class Listener implements ListenerInterface
      *
      * @param  mixed
      * @return void
+     *
+     * @throws \InvalidArgumentException
      */
-    public function onRestored(Model $model)
+    public function onRestored($model)
     {
-        if (method_exists($model, 'restored')) {
-            $type  = 'restore';
-            $table = $model->getTable();
-            $id    = $model->getKey();
-            $old   = [];
-            $new   = [];
-            $user  = Auth::getUser();
-
-            $model::$revisionableLogger
-                ->on($model->getConnection())
-                ->revisionLog($type, $table, $id, $old, $new, $user);
+        if ( ! $model instanceof Model) {
+            throw new \InvalidArgumentException(
+                '$model must be of type Illuminate\Database\Eloquent\Model. '
+                . get_class($model) . ' given.'
+            );
         }
+
+        $type  = 'restore';
+        $table = $model->getTable();
+        $id    = $model->getKey();
+        $old   = [];
+        $new   = [];
+        $user  = Auth::getUser();
+
+        $model::$revisionableLogger
+            ->on($model->getConnection())
+            ->revisionLog($type, $table, $id, $old, $new, $user);
     }
 }

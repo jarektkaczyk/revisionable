@@ -30,8 +30,12 @@ class RevisionableServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('revisionable.logger', function () {
-            return new \Sofa\Revisionable\DbLogger($this->app['db']->connection());
+            return new \Sofa\Revisionable\Laravel4\DbLogger($this->app['db']->connection());
         });
+
+        $this->app->bind('Sofa\Revisionable\Presenter', 'Sofa\Revisionable\Laravel4\Presenter');
+
+        $this->app->bind('Sofa\Revisionable\Listener', 'Sofa\Revisionable\Laravel4\Listener');
     }
 
     /**
@@ -53,6 +57,6 @@ class RevisionableServiceProvider extends ServiceProvider
     {
         $path = (new ReflectionClass($this))->getFileName();
 
-        return realpath(dirname($path).'/../');
+        return realpath(dirname($path).'/../../');
     }
 }
