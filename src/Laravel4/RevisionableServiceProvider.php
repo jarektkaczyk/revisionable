@@ -33,9 +33,70 @@ class RevisionableServiceProvider extends ServiceProvider
             return new \Sofa\Revisionable\Laravel4\DbLogger($this->app['db']->connection());
         });
 
-        $this->app->bind('Sofa\Revisionable\Presenter', 'Sofa\Revisionable\Laravel4\Presenter');
+        $this->registerBindings();
+    }
 
-        $this->app->bind('Sofa\Revisionable\Listener', 'Sofa\Revisionable\Laravel4\Listener');
+    /**
+     * Register additional bindings to the IoC.
+     *
+     * @return void
+     */
+    protected function registerBindings()
+    {
+        $this->bindListener();
+    }
+
+    /**
+     * Bind presenter implementation.
+     *
+     * @return void
+     */
+    protected function bindPresenter()
+    {
+        $this->app->bind('Sofa\Revisionable\Presenter', 'Sofa\Revisionable\Laravel4\Presenter');
+    }
+
+    /**
+     * Bind listener implementation.
+     *
+     * @return void
+     */
+    protected function bindListener()
+    {
+        $authManager = $this->app['config']->get('revisionable::auth_manager');
+
+        switch ($authManager) {
+            case 'sentry':
+                $this->bindSentryListener();
+                break;
+
+            default:
+                $this->bindIlluminateAuthListener();
+        }
+    }
+
+    /**
+     * Bind listener using generic Illuminate Auth.
+     *
+     * @return void
+     */
+    protected function bindIlluminateAuthListener()
+    {
+        $this->app->bind('Sofa\Revisionable\Listener', function () {
+            return new \Sofa\Revisionable\Laravel4\Listener($this->app['auth']);
+        });
+    }
+
+    /**
+     * Bind listener using Sentry package.
+     *
+     * @return void
+     */
+    protected function bindSentryListener()
+    {
+        $this->app->bind('Sofa\Revisionable\Listener', function () {
+            return new \Sofa\Revisionable\Laravel4\Listener($this->app['sentry']);
+        });
     }
 
     /**

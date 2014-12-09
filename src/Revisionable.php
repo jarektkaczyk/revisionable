@@ -7,7 +7,7 @@ interface Revisionable
      *
      * @return void
      */
-    protected static function bootLogger();
+    public static function bootLogger();
 
     /**
      * Register listener for given event.
@@ -15,28 +15,28 @@ interface Revisionable
      * @param  mixed
      * @return void
      */
-    protected static function registerListeners();
+    public static function registerListeners();
 
     /**
      * Get an array of updated revisionable attributes.
      *
      * @return array
      */
-    protected function getDiff();
+    public function getDiff();
 
     /**
      * Get an array of original revisionable attributes.
      *
      * @return array
      */
-    protected function getOldAttributes();
+    public function getOldAttributes();
 
     /**
      * Get an array of current revisionable attributes.
      *
      * @return array
      */
-    protected function getNewAttributes();
+    public function getNewAttributes();
 
     /**
      * Get an array of revisionable attributes.
@@ -44,40 +44,40 @@ interface Revisionable
      * @param  array  $values
      * @return array
      */
-    protected function getRevisionableItems(array $values)
+    public function getRevisionableItems(array $values);
 
     /**
      * Attributes being revisioned.
      *
      * @var array
      */
-    protected function getRevisionable();
+    public function getRevisionable();
 
     /**
      * Attributes hidden from revisioning if revisionable are not provided.
      *
      * @var array
      */
-    protected function getNonRevisionable();
+    public function getNonRevisionable();
 
     /**
      * Determine if model should be revisioned.
      *
      * @return boolean
      */
-    protected function isRevisioned();
+    public function isRevisioned();
 
     /**
      * Disable revisioning for current instance.
      *
      * @return void
      */
-    protected function disableRevisioning();
+    public function disableRevisioning();
 
     /**
      * Enable revisioning for current instance.
      *
      * @return void
      */
-    protected function enableRevisioning();
+    public function enableRevisioning();
 }

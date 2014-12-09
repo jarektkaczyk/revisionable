@@ -2,6 +2,8 @@
 
 return [
 
+	'auth_manager' => 'auth',
+
 	'table' => 'revisions',
 
 	'templates' => [

@@ -36,7 +36,7 @@ trait RevisionableTrait
      *
      * @return void
      */
-    protected static function registerListeners()
+    public static function registerListeners()
     {
         foreach (static::getRevisionableEvents() as $event) {
             static::{"register{$event}Listener"}();
@@ -90,11 +90,43 @@ trait RevisionableTrait
      *
      * @return void
      */
-    protected static function bootLogger()
+    public static function bootLogger()
     {
         if ( ! static::$revisionableLogger) {
-            static::$revisionableLogger = App::make('revisionable.logger');
+            $this->setRevisionableLogger(App::make('revisionable.logger'));
         }
+    }
+
+    /**
+     * Set logger instance.
+     *
+     * @param mixed $logger
+     */
+    public function setRevisionableLogger($logger)
+    {
+        static::$revisionableLogger = $logger;
+    }
+
+    /**
+     * Get logger instance.
+     *
+     * @return \Sofa\Revisionable\Logger
+     */
+    public function getRevisionableLogger()
+    {
+        return static::$revisionableLogger;
+    }
+
+    /**
+     * Get the connection for revision logs.
+     *
+     * @return \Illuminate\Database\ConnectionInterface
+     */
+    public function getRevisionableConnection()
+    {
+        $connection = (isset($this->revisionableConnection)) ? $this->revisionableConnection : null;
+
+        return static::resolveConnection($connection);
     }
 
     /**
@@ -197,7 +229,7 @@ trait RevisionableTrait
      *
      * @return void
      */
-    protected function disableRevisioning()
+    public function disableRevisioning()
     {
         $this->revisioned = false;
     }
@@ -207,7 +239,7 @@ trait RevisionableTrait
      *
      * @return void
      */
-    protected function enableRevisioning()
+    public function enableRevisioning()
     {
         $this->revisioned = true;
     }
