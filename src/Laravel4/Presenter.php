@@ -29,15 +29,15 @@ class Presenter extends AbstractPresenter
         $html = '<div>';
 
         foreach ($this->getDiff() as $key => $values) {
-            $html .= $this->config->get('revisionable::templates.diff.start');
+            $html .= $this->config->get('revisionable::config.templates.diff.start');
 
             $html .= str_replace(
                 [':key', ':old', ':new'],
                 [$key, $this->old($key), $this->new($key)],
-                $this->config->get('revisionable::templates.diff.body')
+                $this->config->get('revisionable::config.templates.diff.body')
             );
 
-            $html .= $this->config->get('revisionable::templates.diff.end');
+            $html .= $this->config->get('revisionable::config.templates.diff.end');
         }
 
         $html .= '</div>';

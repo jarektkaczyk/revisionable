@@ -1,26 +1,26 @@
 <?php namespace Sofa\Revisionable\Laravel4;
 
 use Sofa\Revisionable\Listener as ListenerInterface;
+use Sofa\Revisionable\UserProvider;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\UserInterface;
 
 class Listener implements ListenerInterface
 {
     /**
-     * Auth manager instance.
+     * User provider instance.
      *
      * @var mixed
      */
-    protected $auth;
+    protected $userProvider;
     
     /**
      * Create new listener.
      *
-     * @param mixed $auth
+     * @param mixed $userProvider
      */
-    public function __construct($auth)
+    public function __construct(UserProvider $userProvider)
     {
-        $this->auth = $auth;
+        $this->userProvider = $userProvider;
     }
 
     /**
@@ -154,11 +154,11 @@ class Listener implements ListenerInterface
     /**
      * Get currently logged in user.
      *
-     * @return \Illuminate\Auth\UserInterface|null
+     * @return string|null
      */
     public function getCurrentUser()
     {
-        return $this->auth->getUser();
+        return $this->userProvider->getUser();
     }
 
     /**

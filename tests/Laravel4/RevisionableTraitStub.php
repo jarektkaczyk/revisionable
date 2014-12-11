@@ -50,7 +50,7 @@ class RevisionableTraitStub implements Revisionable
 
     public static function bootLogger()
     {
-        return null;
+
     }
 
     public static function created($callback)

@@ -1,7 +1,6 @@
 <?php namespace Sofa\Revisionable\Laravel4;
 
 use Sofa\Revisionable\Logger;
-use Illuminate\Auth\UserInterface;
 use Illuminate\Database\ConnectionInterface;
 
 class DbLogger implements Logger
@@ -38,7 +37,7 @@ class DbLogger implements Logger
      * @param  int     $id
      * @param  array   $old
      * @param  array   $new
-     * @param  \Illuminate\Auth\UserInterface  $user
+     * @param  string  $user
      * @return void
      */
     public function revisionLog($type, $table, $id, array $old = [], array $new = [], $user = null)
@@ -83,13 +82,7 @@ class DbLogger implements Logger
      */
     protected function parseUser($user)
     {
-        if (is_string($user)) {
-            return $user;
-        }
-
-        return ($user instanceof UserInterface)
-            ? $user->getAuthIdentifier()
-            : ' -- ';
+        return (is_string($user)) ? $user : ' -- ';
     }
 
     /**

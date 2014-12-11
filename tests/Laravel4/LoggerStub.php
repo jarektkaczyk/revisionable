@@ -7,7 +7,7 @@ class LoggerStub
 
     }
 
-    public function revisionLog($type, $table, $id, $old, $new, $user)
+    public function revisionLog()
     {
 
     }

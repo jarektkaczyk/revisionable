@@ -8,5 +8,12 @@ class EloquentRevisionableStub extends Model implements Revisionable
 {
     protected $revisionableConnection = 'custom_connection';
     
-    use RevisionableTrait;
+    use RevisionableTrait {
+    	getRevisionableLogger as getLogger;
+    }
+
+    public function getRevisionableLogger()
+    {
+    	return static::getLogger();
+    }
 }

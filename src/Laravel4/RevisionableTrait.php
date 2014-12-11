@@ -93,7 +93,7 @@ trait RevisionableTrait
     public static function bootLogger()
     {
         if ( ! static::$revisionableLogger) {
-            $this->setRevisionableLogger(App::make('revisionable.logger'));
+            static::setRevisionableLogger(App::make('revisionable.logger'));
         }
     }
 
@@ -102,7 +102,7 @@ trait RevisionableTrait
      *
      * @param mixed $logger
      */
-    public function setRevisionableLogger($logger)
+    public static function setRevisionableLogger($logger)
     {
         static::$revisionableLogger = $logger;
     }
@@ -112,7 +112,7 @@ trait RevisionableTrait
      *
      * @return \Sofa\Revisionable\Logger
      */
-    public function getRevisionableLogger()
+    public static function getRevisionableLogger()
     {
         return static::$revisionableLogger;
     }

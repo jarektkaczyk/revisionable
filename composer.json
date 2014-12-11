@@ -18,9 +18,14 @@
         "phpunit/phpunit": "~4.0",
         "mockery/mockery": "*",
         "squizlabs/php_codesniffer": "~2.0",
-        "illuminate/database": "~4.2.9"
+        "illuminate/database": "~4.2.9",
+        "illuminate/auth": "~4.2.9",
+        "cartalyst/sentry": "~2.0"
     },
     "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
         "psr-4": {
             "Sofa\\Revisionable\\": "src"
         }

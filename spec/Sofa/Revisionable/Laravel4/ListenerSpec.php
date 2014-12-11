@@ -7,9 +7,11 @@ use Prophecy\Argument;
 
 class ListenerSpec extends ObjectBehavior
 {
-    function let()
+    function let($userProvider)
     {
-        $this->beConstructedWith('\Sofa\Revisionable\Tests\Laravel4\AuthManagerStub');
+        $userProvider->beADoubleOf('\Sofa\Revisionable\Tests\Laravel4\UserProviderStub');
+
+        $this->beConstructedWith($userProvider);
     }
 
     function it_implements_listener_interface()
@@ -29,7 +31,7 @@ class ListenerSpec extends ObjectBehavior
 
     /**
      * @param  \Sofa\Revisionable\Tests\Laravel4\EloquentRevisionableStub $model
-     * @param  \Sofa\Revisionable\Tests\Laravel4\AuthManagerStub $auth
+     * @param  \Sofa\Revisionable\Tests\Laravel4\UserProviderStub $auth
      * @param  \Sofa\Revisionable\Tests\Laravel4\LoggerStub $logger
      */
     function it_tracks_changes_when_revisioning_is_enabled($model, $auth, $logger)
@@ -73,7 +75,7 @@ class ListenerSpec extends ObjectBehavior
 
     /**
      * @param  \Sofa\Revisionable\Tests\Laravel4\EloquentRevisionableStub $model
-     * @param  \Sofa\Revisionable\Tests\Laravel4\AuthManagerStub $auth
+     * @param  \Sofa\Revisionable\Tests\Laravel4\UserProviderStub $auth
      * @param  \Sofa\Revisionable\Tests\Laravel4\LoggerStub $logger
      */
     function it_uses_model_connection_if_set($model, $auth, $logger)

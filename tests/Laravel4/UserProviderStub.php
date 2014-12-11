@@ -1,6 +1,8 @@
 <?php namespace Sofa\Revisionable\Tests\Laravel4;
 
-class AuthManagerStub
+use Sofa\Revisionable\UserProvider;
+
+class UserProviderStub implements UserProvider
 {
     public function getUser()
     {

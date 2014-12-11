@@ -10,17 +10,7 @@ class RevisionableServiceProvider extends ServiceProvider
      *
      * @var bool
      */
-    protected $defer = true;
-
-    /**
-     * Boot the package.
-     *
-     * @return void
-     */
-    public function boot()
-    {
-        $this->package('sofa/revisionable', 'revisionable', $this->guessPackagePath());
-    }
+    protected $defer = false;
 
     /**
      * Register the service provider.
@@ -29,25 +19,88 @@ class RevisionableServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('revisionable.logger', function () {
-            return new \Sofa\Revisionable\Laravel4\DbLogger($this->app['db']->connection());
-        });
+        // We need to register package namespace now in order to use its config
+        // when binding the UserProvider, since boot method is called later
+        $this->package('sofa/revisionable', 'revisionable', $this->guessPackagePath());
 
-        $this->registerBindings();
+        $this->bindLogger();
+
+        $this->bindUserProvider();
+
+        $this->bindListener();
+
+        $this->bindPresenter();
     }
 
     /**
-     * Register additional bindings to the IoC.
+     * Bind Revisionable logger implementation to the IoC.
      *
      * @return void
      */
-    protected function registerBindings()
+    protected function bindLogger()
     {
-        $this->bindListener();
+        $this->app->bindShared('revisionable.logger', function ($app) {
+            return new \Sofa\Revisionable\Laravel4\DbLogger($app['db']->connection());
+        });
     }
 
     /**
-     * Bind presenter implementation.
+     * Bind user provider implementation to the IoC.
+     *
+     * @return void
+     */
+    protected function bindUserProvider()
+    {
+        $userProvider = $this->app['config']->get('revisionable::config.userprovider');
+
+        switch ($userProvider) {
+            case 'sentry':
+                $this->bindSentryProvider();
+                break;
+
+            default:
+                $this->bindGuardProvider();
+        }
+    }
+
+    /**
+     * Bind adapter for Sentry to the IoC.
+     *
+     * @return void
+     */
+    protected function bindSentryProvider()
+    {
+        $this->app->bindShared('revisionable.userprovider', function ($app) {
+            return new \Sofa\Revisionable\Adapters\Sentry($app['sentry']);
+        });
+    }
+
+    /**
+     * Bind adapter for Illuminate Guard to the IoC.
+     *
+     * @return void
+     */
+    protected function bindGuardProvider()
+    {
+        $this->app->bindShared('revisionable.userprovider', function ($app) {
+            return new \Sofa\Revisionable\Adapters\IlluminateAuth($app['auth']->driver());
+        });
+    }
+
+    /**
+     * Bind listener implementation to the Ioc.
+     *
+     * @return void
+     */
+    protected function bindListener()
+    {
+        $this->app->bind('Sofa\Revisionable\Listener', function ($app) {
+            return new \Sofa\Revisionable\Laravel4\Listener($app['revisionable.userprovider']);
+        });
+    }
+
+    /**
+     * Bind presenter implementation to the IoC.
      *
      * @return void
      */
@@ -57,56 +110,16 @@ class RevisionableServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bind listener implementation.
-     *
-     * @return void
-     */
-    protected function bindListener()
-    {
-        $authManager = $this->app['config']->get('revisionable::auth_manager');
-
-        switch ($authManager) {
-            case 'sentry':
-                $this->bindSentryListener();
-                break;
-
-            default:
-                $this->bindIlluminateAuthListener();
-        }
-    }
-
-    /**
-     * Bind listener using generic Illuminate Auth.
-     *
-     * @return void
-     */
-    protected function bindIlluminateAuthListener()
-    {
-        $this->app->bind('Sofa\Revisionable\Listener', function () {
-            return new \Sofa\Revisionable\Laravel4\Listener($this->app['auth']);
-        });
-    }
-
-    /**
-     * Bind listener using Sentry package.
-     *
-     * @return void
-     */
-    protected function bindSentryListener()
-    {
-        $this->app->bind('Sofa\Revisionable\Listener', function () {
-            return new \Sofa\Revisionable\Laravel4\Listener($this->app['sentry']);
-        });
-    }
-
-    /**
      * Get the services provided by the provider.
      *
      * @return array
      */
     public function provides()
     {
-        return array('revisionable.logger');
+        return [
+            'revisionable.logger',
+            'revisionable.userprovider',
+        ];
     }
 
     /**
@@ -118,6 +131,6 @@ class RevisionableServiceProvider extends ServiceProvider
     {
         $path = (new ReflectionClass($this))->getFileName();
 
-        return realpath(dirname($path).'/../../');
+        return realpath(dirname($path).'/../');
     }
 }
