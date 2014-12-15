@@ -37,21 +37,15 @@ abstract class Presenter
      *
      * @throws \InvalidArgumentException
      */
-    public function __construct($revision)
+    public function __construct(array $revision)
     {
-        if ( ! is_array($revision)) {
-            throw new \InvalidArgumentException(
-                'Presenter must be constructed with an array or \Sofa\Revisionable\Revision object.'
-            );
-        }
-
         $this->revision = $revision;
 
         $this->boot();
     }
 
     /**
-     * Render diff in human readable way as defined in the config.
+     * Render diff.
      *
      * @return string
      */
@@ -92,6 +86,11 @@ abstract class Presenter
             : null;
     }
 
+    /**
+     * Boot presenter.
+     * 
+     * @return void
+     */
     protected function boot()
     {
         $this->parseRevision();
@@ -112,7 +111,7 @@ abstract class Presenter
     }
 
     /**
-     * Get revision diff.
+     * Build revision diff.
      *
      * @return void
      */

@@ -22,7 +22,9 @@ class Presenter extends AbstractPresenter
     }
 
     /**
-     * {@inheritdoc}
+     * Render diff in human readable manner as defined in the config.
+     *
+     * @return string
      */
     public function renderDiff()
     {

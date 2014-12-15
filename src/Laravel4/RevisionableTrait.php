@@ -1,6 +1,5 @@
 <?php namespace Sofa\Revisionable\Laravel4;
 
-use \Auth;
 use \App;
 
 trait RevisionableTrait
@@ -10,7 +9,7 @@ trait RevisionableTrait
      *
      * @var \Sofa\Revisionable\Logger
      */
-    public static $revisionableLogger;
+    protected static $revisionableLogger;
 
     /**
      * Revisioning switch.
