@@ -65,7 +65,7 @@ class Listener implements ListenerInterface
     {
         $this->checkModel($model);
 
-        if ( ! $model->isRevisioned() || empty($model->getDiff())) {
+        if ( ! $model->isRevisioned() || ! count($model->getDiff())) {
             return false;
         }
 
