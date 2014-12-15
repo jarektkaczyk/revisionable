@@ -88,7 +88,7 @@ abstract class Presenter
 
     /**
      * Boot presenter.
-     * 
+     *
      * @return void
      */
     protected function boot()

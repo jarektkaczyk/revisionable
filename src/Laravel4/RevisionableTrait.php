@@ -79,7 +79,7 @@ trait RevisionableTrait
      */
     protected static function registerRestoredListener()
     {
-        if (method_exists(static::class, 'restored')) {
+        if (method_exists(get_called_class(), 'restored')) {
             static::restored('Sofa\Revisionable\Listener@onRestored');
         }
     }
