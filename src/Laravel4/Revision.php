@@ -14,7 +14,7 @@ class Revision extends Model
     
     public function __construct()
     {
-        $this->table = Config::get('revisionable::config.table') :? 'revisions';
+        $this->table = Config::get('revisionable::config.table') ?: 'revisions';
     }
 
     /**
