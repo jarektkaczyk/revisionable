@@ -1,5 +1,7 @@
 # Sofa/Revisionable
 
+![](https://scrutinizer-ci.com/g/jarektkaczyk/revisionable/badges/quality-score.png?b=master)
+
 Nice and easy way to handle revisions of your db.
 
 Full docs coming soon...
