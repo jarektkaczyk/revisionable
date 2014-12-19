@@ -18,7 +18,7 @@ class RevisionableTraitStub implements Revisionable
         bootLogger as orgBootLogger;
     }
 
-    public function getRevisionableEvents()
+    public static function getRevisionableEvents()
     {
         return static::getEvents();
     }

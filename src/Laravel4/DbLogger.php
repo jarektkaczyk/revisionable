@@ -30,7 +30,7 @@ class DbLogger implements Logger
     }
 
     /**
-     * Log data revisions the db.
+     * Log data revisions in the db.
      *
      * @param  string  $type
      * @param  string  $table
@@ -110,7 +110,7 @@ class DbLogger implements Logger
      *
      * @param  string $key
      * @param  mixed  $default
-     * @return mixed
+     * @return string|array
      */
     protected function getFromServer($key, $default = null)
     {

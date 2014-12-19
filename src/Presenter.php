@@ -1,5 +1,10 @@
 <?php namespace Sofa\Revisionable;
 
+/**
+ * @method mixed old(string $key)
+ * @method mixed new(string $key)
+ * @method mixed figg(string $key)
+ */
 abstract class Presenter
 {
     /**

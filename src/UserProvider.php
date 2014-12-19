@@ -2,5 +2,8 @@
 
 interface UserProvider
 {
+	/**
+	 * @return string|null
+	 */
     public function getUser();
 }

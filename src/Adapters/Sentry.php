@@ -15,7 +15,7 @@ class Sentry implements UserProvider
     /**
      * Create adapter instance for Sentry.
      *
-     * @param Sentry $provider
+     * @param SentryProvider $provider
      */
     public function __construct(SentryProvider $provider)
     {

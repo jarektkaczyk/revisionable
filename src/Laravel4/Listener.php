@@ -16,7 +16,7 @@ class Listener implements ListenerInterface
     /**
      * Create new listener.
      *
-     * @param mixed $userProvider
+     * @param UserProvider $userProvider
      */
     public function __construct(UserProvider $userProvider)
     {
@@ -27,7 +27,7 @@ class Listener implements ListenerInterface
      * Handle created event.
      *
      * @param  mixed
-     * @return null|bool
+     * @return false|null
      */
     public function onCreated($model)
     {
@@ -59,7 +59,7 @@ class Listener implements ListenerInterface
      * Handle updated event.
      *
      * @param  mixed
-     * @return null|bool
+     * @return false|null
      */
     public function onUpdated($model)
     {
@@ -91,7 +91,7 @@ class Listener implements ListenerInterface
      * Handle deleted event.
      *
      * @param  mixed
-     * @return null|bool
+     * @return false|null
      */
     public function onDeleted($model)
     {
@@ -123,7 +123,7 @@ class Listener implements ListenerInterface
      * Handle restored event.
      *
      * @param  mixed
-     * @return null|bool
+     * @return false|null
      */
     public function onRestored($model)
     {

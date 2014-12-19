@@ -6,6 +6,13 @@ use Illuminate\Config\Repository as Config;
 class Presenter extends AbstractPresenter
 {
     /**
+     * Application config repository.
+     *
+     * @var \Illuminate\Config\Repository
+     */
+    protected $config;
+
+    /**
      * Create a new revision presenter.
      *
      * @param \Sofa\Revisionable\Revision|array $revision
