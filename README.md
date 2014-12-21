@@ -1,10 +1,27 @@
 # Sofa/Revisionable
 
-![](https://scrutinizer-ci.com/g/jarektkaczyk/revisionable/badges/quality-score.png?b=master)
+[![Code quality](https://scrutinizer-ci.com/g/jarektkaczyk/revisionable/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jarektkaczyk/revisionable)
 
 Nice and easy way to handle revisions of your db.
 
-Full docs coming soon...
+## Why?
+
+There is already pretty popular package [VentureCraft/Revisionable](https://github.com/VentureCraft/revisionable) handling data revisions, so you may ask why bother? So here a few things:
+
+* VentureCraft's package is Eloquent-specific
+* It doesn't let you use custom `boot` method on your revisionable models (can be fixed easily, but it is not currently)
+* It refers to the models and dynamic data (foreign keys)
+* It handles revisions per each field
+
+
+*This package takes different approach to the revisions and offers:*
+
+* **Working with Eloquent out of the box**, but not Eloquent-specific
+* **Doesn't clash** with Eloquent `boot` method
+* It refers to **static data** (what it is supposed to do if we're talking about any kind of logs) - **tables** instead of models, static **values** instead of  foreign keys
+* Handles the revisions in **bulk** - one entry covers all the created/updated fields, what makes it really **easy to eg. compare 2 given versions** or get all the data changed during single action. 
+
+Disclaimer: This package is not a fork, nor does it use any piece of code from the linked VentureCraft's one.
 
 
 ## Requirements
