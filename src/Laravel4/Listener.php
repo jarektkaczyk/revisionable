@@ -26,129 +26,49 @@ class Listener implements ListenerInterface
     /**
      * Handle created event.
      *
-     * @param  mixed
+     * @param  \Illuminate\Database\Eloquent\Model
      * @return false|null
      */
     public function onCreated($model)
     {
-        $this->checkModel($model);
-
-        if ( ! $model->isRevisioned()) {
-            return false;
-        }
-
-        $type  = 'create';
-        $table = $model->getTable();
-        $id    = $model->getKey();
-        $old   = [];
-        $new   = $model->getNewAttributes();
-        $user  = $this->getCurrentUser();
-
-        $logger = $model->getRevisionableLogger();
-
-        $connection = $model->getRevisionableConnection();
-
-        if ($connection) {
-            $logger->on($connection);
-        }
-
-        $logger->revisionLog($type, $table, $id, $old, $new, $user);
+        return $this->log('create', $model);
     }
 
     /**
      * Handle updated event.
      *
-     * @param  mixed
+     * @param  \Illuminate\Database\Eloquent\Model
      * @return false|null
      */
     public function onUpdated($model)
     {
-        $this->checkModel($model);
-
-        if ( ! $model->isRevisioned() || ! count($model->getDiff())) {
+        if ( ! count($model->getDiff())) {
             return false;
         }
 
-        $type  = 'update';
-        $table = $model->getTable();
-        $id    = $model->getKey();
-        $old   = $model->getOldAttributes();
-        $new   = $model->getNewAttributes();
-        $user  = $this->getCurrentUser();
-
-        $logger = $model->getRevisionableLogger();
-
-        $connection = $model->getRevisionableConnection();
-
-        if ($connection) {
-            $logger->on($connection);
-        }
-
-        $logger->revisionLog($type, $table, $id, $old, $new, $user);
+        return $this->log('update', $model);
     }
 
     /**
      * Handle deleted event.
      *
-     * @param  mixed
+     * @param  \Illuminate\Database\Eloquent\Model
      * @return false|null
      */
     public function onDeleted($model)
     {
-        $this->checkModel($model);
-
-        if ( ! $model->isRevisioned()) {
-            return false;
-        }
-
-        $type  = 'delete';
-        $table = $model->getTable();
-        $id    = $model->getKey();
-        $old   = [];
-        $new   = [];
-        $user  = $this->getCurrentUser();
-
-        $logger = $model->getRevisionableLogger();
-
-        $connection = $model->getRevisionableConnection();
-
-        if ($connection) {
-            $logger->on($connection);
-        }
-
-        $logger->revisionLog($type, $table, $id, $old, $new, $user);
+        return $this->log('delete', $model);
     }
 
     /**
      * Handle restored event.
      *
-     * @param  mixed
+     * @param  \Illuminate\Database\Eloquent\Model
      * @return false|null
      */
     public function onRestored($model)
     {
-        $this->checkModel($model);
-
-        if ( ! $model->isRevisioned()) {
-            return false;
-        }
-
-        $type  = 'restore';
-        $table = $model->getTable();
-        $id    = $model->getKey();
-        $old   = [];
-        $new   = [];
-        $user  = $this->getCurrentUser();
-
-        $logger = $model->getRevisionableLogger();
-
-        $connection = $model->getRevisionableConnection();
-
-        if ($connection) {
-            $logger->on($connection);
-        }
-
-        $logger->revisionLog($type, $table, $id, $old, $new, $user);
+        return $this->log('restore', $model);
     }
 
     /**
@@ -159,6 +79,46 @@ class Listener implements ListenerInterface
     public function getCurrentUser()
     {
         return $this->userProvider->getUser();
+    }
+
+    /**
+     * Log the revision.
+     * 
+     * @param  string $type
+     * @param  mixed $model
+     * @return false|null
+     */
+    protected function log($type, $model)
+    {
+        $this->checkModel($model);
+
+        if ( ! $model->isRevisioned()) {
+            return false;
+        }
+
+        $table = $model->getTable();
+        $id    = $model->getKey();
+        $user  = $this->getCurrentUser();
+        $old   = [];
+        $new   = [];
+
+        switch ($type) {
+            case 'create':
+                $new = $model->getNewAttributes();
+                break;
+            case 'update':
+                $old = $model->getOldAttributes();
+                $new = $model->getNewAttributes();
+                break;
+        }
+
+        $logger = $model->getRevisionableLogger();
+
+        if ($connection = $model->getRevisionableConnection()) {
+            $logger->on($connection);
+        }
+
+        $logger->revisionLog($type, $table, $id, $old, $new, $user);
     }
 
     /**
