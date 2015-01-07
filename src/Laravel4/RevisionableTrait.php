@@ -2,6 +2,11 @@
 
 use \App;
 
+/**
+ * @property array original
+ * @property array attributes
+ * @property array revisionableConnection
+ */
 trait RevisionableTrait
 {
     /**
