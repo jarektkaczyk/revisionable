@@ -247,4 +247,75 @@ trait RevisionableTrait
     {
         $this->revisioned = true;
     }
+
+    /**
+     * Model has many Revision
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function revisions()
+    {
+        return $this->hasMany('Sofa\Revisionable\Laravel4\Revision', 'row_id')
+            ->where('table_name', $this->getTable());
+    }
+
+    /**
+     * Revisionable has one Revision count.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function revisionsCount()
+    {
+        return $this->hasOne('Sofa\Revisionable\Laravel4\Revision', 'row_id')
+            ->where('table_name', $this->getTable())
+            ->selectRaw('count(*) as aggregate, row_id')
+            ->groupBy('row_id');
+    }
+
+    /**
+     * Convenient accessor for revisionsCount relation.
+     * 
+     * @return integer
+     */
+    public function getRevisionsCountAttribute()
+    {
+        if ( ! array_key_exists('revisionsCount', $this->relations)) $this->load('revisionsCount');
+    
+        $relation = $this->getRelation('revisionsCount');
+    
+        return ($relation) ? (int) $relation->aggregate : 0;
+    }
+
+    /**
+     * Determine if model has any revisions history.
+     * 
+     * @return boolean
+     */
+    public function hasRevisions()
+    {
+        return (bool) $this->revisionsCount;
+    }
+
+    /**
+     * Determine if model has any revisions history.
+     * 
+     * @return boolean
+     */
+    public function hasHistory()
+    {
+        return $this->hasRevisions();
+    }
+
+    /**
+     * User has one FirstRevision
+     *
+     * @return Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function oldestRevision()
+    {
+        return $this->hasOne('Sofa\Revisionable\Laravel4\Revision', 'row_id')
+            ->where('table_name', $this->getTable())
+            ->oldest();
+    }
+
 }
