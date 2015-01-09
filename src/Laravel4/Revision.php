@@ -29,4 +29,24 @@ class Revision extends Model
             return false;
         });
     }
+
+    /**
+     * Accessor for old property
+     *
+     * @return array
+     */
+    public function getOldAttribute($old)
+    {
+        return (array) json_decode($old);
+    }
+
+    /**
+     * Accessor for new property
+     *
+     * @return array
+     */
+    public function getNewAttribute($new)
+    {
+        return (array) json_decode($new);
+    }
 }
