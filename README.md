@@ -37,7 +37,7 @@ Disclaimer: This package is not a fork, nor does it use any piece of code from t
 ```
     "require": {
         ...
-        "sofa/revisionable": "*",
+        "sofa/revisionable": "*@dev",
         ...
     },
 
