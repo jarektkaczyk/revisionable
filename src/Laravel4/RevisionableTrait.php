@@ -154,7 +154,11 @@ trait RevisionableTrait
      */
     public function getOldAttributes()
     {
-        return $this->getRevisionableItems($this->original);
+        $attributes = $this->getRevisionableItems($this->original);
+
+        return array_map(function ($attribute) {
+            return (string) $attribute;
+        }, $attributes);
     }
 
     /**
@@ -164,7 +168,11 @@ trait RevisionableTrait
      */
     public function getNewAttributes()
     {
-        return $this->getRevisionableItems($this->attributes);
+        $attributes = $this->getRevisionableItems($this->attributes);
+
+        return array_map(function ($attribute) {
+            return (string) $attribute;
+        }, $attributes);
     }
 
     /**
