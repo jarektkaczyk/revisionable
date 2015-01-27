@@ -67,7 +67,6 @@ class ListenerSpec extends ObjectBehavior
      */
     function it_does_not_track_update_if_none_of_revisionable_attributes_were_changed($model)
     {
-        $model->isRevisioned()->shouldBeCalled()->willReturn(true);
         $model->getDiff()->shouldBeCalled()->willReturn([]);
 
         $this->onUpdated($model)->shouldReturn(false);

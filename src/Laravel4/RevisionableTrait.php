@@ -331,13 +331,12 @@ trait RevisionableTrait
             ->oldest();
     }
 
-    abstract public static function created();
-    abstract public static function updated();
-    abstract public static function deleted();
-    abstract public static function restored();
+    abstract public static function created($callback);
+    abstract public static function updated($callback);
+    abstract public static function deleted($callback);
     abstract public function getTable();
-    abstract public function hasMany();
-    abstract public function hasOne();
-    abstract public function load();
-    abstract public function getRelation();
+    abstract public function hasMany($related, $foreignKey = null, $localKey = null);
+    abstract public function hasOne($related, $foreignKey = null, $localKey = null);
+    abstract public function load($relations);
+    abstract public function getRelation($relation);
 }

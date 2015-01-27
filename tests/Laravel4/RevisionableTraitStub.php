@@ -48,28 +48,14 @@ class RevisionableTraitStub implements Revisionable
         $this->revisionable = $attributes;
     }
 
-    public static function bootLogger()
-    {
-
-    }
-
-    public static function created($callback)
-    {
-
-    }
-
-    public static function updated($callback)
-    {
-
-    }
-
-    public static function deleted($callback)
-    {
-
-    }
-
-    public static function restored($callback)
-    {
-
-    }
+    public static function bootLogger() {}
+    public static function created($callback) {}
+    public static function updated($callback) {}
+    public static function deleted($callback) {}
+    public static function restored($callback) {}
+    public function getTable() {}
+    public function hasMany($related, $foreignKey = null, $localKey = null) {}
+    public function hasOne($related, $foreignKey = null, $localKey = null) {}
+    public function load($relations) {}
+    public function getRelation($relation) {}
 }
