@@ -3,7 +3,10 @@
 use \App;
 
 /**
+ * @property int   revisionsCount
+ * @property array relations
  * @property array original
+ * @property array attributes
  * @property array attributes
  * @property array revisionableConnection
  */
@@ -282,12 +285,14 @@ trait RevisionableTrait
 
     /**
      * Convenient accessor for revisionsCount relation.
-     * 
+     *
      * @return integer
      */
     public function getRevisionsCountAttribute()
     {
-        if ( ! array_key_exists('revisionsCount', $this->relations)) $this->load('revisionsCount');
+        if ( ! array_key_exists('revisionsCount', $this->relations)) {
+            $this->load('revisionsCount');
+        }
     
         $relation = $this->getRelation('revisionsCount');
     
@@ -296,7 +301,7 @@ trait RevisionableTrait
 
     /**
      * Determine if model has any revisions history.
-     * 
+     *
      * @return boolean
      */
     public function hasRevisions()
@@ -306,7 +311,7 @@ trait RevisionableTrait
 
     /**
      * Determine if model has any revisions history.
-     * 
+     *
      * @return boolean
      */
     public function hasHistory()
@@ -326,4 +331,13 @@ trait RevisionableTrait
             ->oldest();
     }
 
+    abstract public static function created();
+    abstract public static function updated();
+    abstract public static function deleted();
+    abstract public static function restored();
+    abstract public function getTable();
+    abstract public function hasMany();
+    abstract public function hasOne();
+    abstract public function load();
+    abstract public function getRelation();
 }

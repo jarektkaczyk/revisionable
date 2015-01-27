@@ -83,7 +83,7 @@ class Listener implements ListenerInterface
 
     /**
      * Log the revision.
-     * 
+     *
      * @param  string $type
      * @param  mixed $model
      * @return false|null
