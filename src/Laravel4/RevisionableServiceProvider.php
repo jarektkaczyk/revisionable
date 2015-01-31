@@ -30,6 +30,8 @@ class RevisionableServiceProvider extends ServiceProvider
         $this->bindListener();
 
         $this->bindPresenter();
+
+        $this->bootModel();
     }
 
     /**
@@ -107,6 +109,18 @@ class RevisionableServiceProvider extends ServiceProvider
     protected function bindPresenter()
     {
         $this->app->bind('Sofa\Revisionable\Presenter', 'Sofa\Revisionable\Laravel4\Presenter');
+    }
+
+    /**
+     * Boot the Revision model.
+     *
+     * @return void
+     */
+    protected function bootModel()
+    {
+        $table = $this->app['config']->get('revisionable::config.table');
+
+        forward_static_call_array(['\Sofa\Revisionable\Laravel4\Revision', 'setCustomTable'], [$table]);
     }
 
     /**

@@ -1,7 +1,6 @@
 <?php namespace Sofa\Revisionable\Laravel4;
 
 use Illuminate\Database\Eloquent\Model;
-use \Config;
 
 class Revision extends Model
 {
@@ -10,13 +9,8 @@ class Revision extends Model
      *
      * @var string
      */
-    protected $table;
+    protected static $customTable;
     
-    public function __construct()
-    {
-        $this->table = Config::get('revisionable::config.table') ?: 'revisions';
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -48,5 +42,29 @@ class Revision extends Model
     public function getNewAttribute($new)
     {
         return (array) json_decode($new);
+    }
+ 
+    /**
+     * {@inheritdoc}
+     */
+    public function getTable()
+    {
+        $table = $this->table ?: static::$customTable;
+
+        return ($table) ?: parent::getTable();
+    }
+
+    /**
+     * Set custom table name for the model.
+     *
+     * @param  string  $table
+     * @return void
+     */
+    public static function setCustomTable($table)
+    {
+        if ( ! isset(static::$customTable))
+        {
+            static::$customTable = $table;
+        }
     }
 }
