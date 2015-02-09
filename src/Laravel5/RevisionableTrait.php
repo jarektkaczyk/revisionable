@@ -1,4 +1,4 @@
-<?php namespace Sofa\Revisionable\Laravel4;
+<?php namespace Sofa\Revisionable\Laravel5;
 
 use \App;
 
@@ -266,7 +266,7 @@ trait RevisionableTrait
      */
     public function revisions()
     {
-        return $this->hasMany('Sofa\Revisionable\Laravel4\Revision', 'row_id')
+        return $this->hasMany('Sofa\Revisionable\Laravel5\Revision', 'row_id')
             ->where('table_name', $this->getTable());
     }
 
@@ -277,7 +277,7 @@ trait RevisionableTrait
      */
     public function revisionsCount()
     {
-        return $this->hasOne('Sofa\Revisionable\Laravel4\Revision', 'row_id')
+        return $this->hasOne('Sofa\Revisionable\Laravel5\Revision', 'row_id')
             ->where('table_name', $this->getTable())
             ->selectRaw('count(*) as aggregate, row_id')
             ->groupBy('row_id');
@@ -326,7 +326,7 @@ trait RevisionableTrait
      */
     public function oldestRevision()
     {
-        return $this->hasOne('Sofa\Revisionable\Laravel4\Revision', 'row_id')
+        return $this->hasOne('Sofa\Revisionable\Laravel5\Revision', 'row_id')
             ->where('table_name', $this->getTable())
             ->oldest();
     }
