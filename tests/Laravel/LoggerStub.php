@@ -1,4 +1,4 @@
-<?php namespace Sofa\Revisionable\Tests\Laravel4;
+<?php namespace Sofa\Revisionable\Tests\Laravel;
 
 class LoggerStub
 {

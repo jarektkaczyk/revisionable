@@ -1,4 +1,4 @@
-<?php namespace Sofa\Revisionable\Laravel4;
+<?php namespace Sofa\Revisionable\Laravel;
 
 use Sofa\Revisionable\Presenter as AbstractPresenter;
 use Illuminate\Config\Repository as Config;

@@ -29,6 +29,23 @@ Disclaimer: This package is not a fork, nor does it use any piece of code from t
 * This package requires PHP 5.4+
 * Currently it works out of the box with Laravel4 + generic Auth guard OR cartalyst/sentry 2
 
+## Upgrade from 0.* to 0.2
+
+With Laravel5 realease every package supporting the framework is required to change the way it is registered. 
+With this change, I decided to move all the Laravel specific code under `Laravel` namespace and that breaks BC. However upgrade path is very quick and easy, so if you used the package with `Laravel4` this is what you need to do:
+
+```
+1. Change the provider entry in your app/config/app.php file to:
+'Sofa\Revisionable\Laravel\FourServiceProvider',
+
+2. Change the use statements in your revisionable models to:
+use Sofa\Revisionable\Laravel\RevisionableTrait;
+```
+
+And it's done!.
+
+
+
 ## Usage (Laravel5 example)
 
 ### 1. Download the package or require in your `composer.json`:
@@ -36,7 +53,7 @@ Disclaimer: This package is not a fork, nor does it use any piece of code from t
 ```
     "require": {
         ...
-        "sofa/revisionable": "*@dev",
+        "sofa/revisionable": "~0.2@dev",
         ...
     },
 
@@ -49,14 +66,14 @@ Disclaimer: This package is not a fork, nor does it use any piece of code from t
 
         ...
 
-        'Sofa\Revisionable\Laravel5\RevisionableServiceProvider',
+        'Sofa\Revisionable\Laravel\FiveServiceProvider',
     ),
 ```
 
 ### 3. Publish the package config file:
 
 ```
-~$ php artisan vendor:publish [--provider="Sofa\Revisionable\Laravel5\RevisionableServiceProvider"]
+~$ php artisan vendor:publish [--provider="Sofa\Revisionable\Laravel\FiveServiceProvider"]
 ```
 
 this will create `config/sofa_revisionable.php` file, where you can adjust a few settings:
@@ -71,7 +88,7 @@ return [
     | User provider (auth) implementation.
     |--------------------------------------------------------------------------
     |
-    | By default Laravel4 generic Illuminate\Auth\Guard.
+    | By default Laravel generic Illuminate\Auth\Guard.
     |
     | Supported options:
     |  - illuminate
@@ -112,7 +129,7 @@ return [
 ];
 ```
 
-* `userprovider` is the authentication driver you are using. Currently supported are generic Laravel4 Guard and Cartalyst/Sentry 2. It will provide the logger with user identifier.
+* `userprovider` is the authentication driver you are using. Currently supported are generic Laravel Guard and Cartalyst/Sentry 2. It will provide the logger with user identifier.
 * `table` for logging the revisions
 * `templates` are there for the Presenter, which is rendering revisions diff
 
@@ -129,7 +146,7 @@ You can provide additional `--database` param if you want the migration to be ru
 ```
 <?php
 
-use Sofa\Revisionable\Laravel5\RevisionableTrait;
+use Sofa\Revisionable\Laravel\RevisionableTrait;
 
 class User extends Eloquent {
 
@@ -175,7 +192,7 @@ Et voila!
 ```
     "require": {
         ...
-        "sofa/revisionable": "*@dev",
+        "sofa/revisionable": "~0.2@dev",
         ...
     },
 
@@ -188,7 +205,7 @@ Et voila!
 
         ...
 
-        'Sofa\Revisionable\Laravel4\RevisionableServiceProvider',
+        'Sofa\Revisionable\Laravel\FourServiceProvider',
     ),
 ```
 
@@ -251,7 +268,7 @@ return [
 ];
 ```
 
-* `userprovider` is the authentication driver you are using. Currently supported are generic Laravel4 Guard and Cartalyst/Sentry 2. It will provide the logger with user identifier.
+* `userprovider` is the authentication driver you are using. Currently supported are generic Laravel Guard and Cartalyst/Sentry 2. It will provide the logger with user identifier.
 * `table` for logging the revisions
 * `templates` are there for the Presenter, which is rendering revisions diff
 
@@ -268,7 +285,7 @@ You can provide additional `--database` param if you want the migration to be ru
 ```
 <?php
 
-use Sofa\Revisionable\Laravel4\RevisionableTrait;
+use Sofa\Revisionable\Laravel\RevisionableTrait;
 
 class User extends Eloquent {
 

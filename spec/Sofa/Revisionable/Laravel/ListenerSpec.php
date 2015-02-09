@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Sofa\Revisionable\Laravel4;
+namespace spec\Sofa\Revisionable\Laravel;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class ListenerSpec extends ObjectBehavior
 {
     function let($userProvider)
     {
-        $userProvider->beADoubleOf('\Sofa\Revisionable\Tests\Laravel4\UserProviderStub');
+        $userProvider->beADoubleOf('\Sofa\Revisionable\Tests\Laravel\UserProviderStub');
 
         $this->beConstructedWith($userProvider);
     }
@@ -20,7 +20,7 @@ class ListenerSpec extends ObjectBehavior
     }
 
     /**
-     * @param  \Sofa\Revisionable\Tests\Laravel4\EloquentRevisionableStub $eloquent
+     * @param  \Sofa\Revisionable\Tests\Laravel\EloquentRevisionableStub $eloquent
      * @param  \StdClass $object
      */
     function it_handles_only_eloquent_models($eloquent, $object)
@@ -30,9 +30,9 @@ class ListenerSpec extends ObjectBehavior
     }
 
     /**
-     * @param  \Sofa\Revisionable\Tests\Laravel4\EloquentRevisionableStub $model
-     * @param  \Sofa\Revisionable\Tests\Laravel4\UserProviderStub $auth
-     * @param  \Sofa\Revisionable\Tests\Laravel4\LoggerStub $logger
+     * @param  \Sofa\Revisionable\Tests\Laravel\EloquentRevisionableStub $model
+     * @param  \Sofa\Revisionable\Tests\Laravel\UserProviderStub $auth
+     * @param  \Sofa\Revisionable\Tests\Laravel\LoggerStub $logger
      */
     function it_tracks_changes_when_revisioning_is_enabled($model, $auth, $logger)
     {
@@ -53,7 +53,7 @@ class ListenerSpec extends ObjectBehavior
     }
 
     /**
-     * @param  \Sofa\Revisionable\Tests\Laravel4\EloquentRevisionableStub $model
+     * @param  \Sofa\Revisionable\Tests\Laravel\EloquentRevisionableStub $model
      */
     function it_does_not_track_changes_when_revisioning_is_disabled($model)
     {
@@ -63,7 +63,7 @@ class ListenerSpec extends ObjectBehavior
     }
 
     /**
-     * @param  \Sofa\Revisionable\Tests\Laravel4\EloquentRevisionableStub $model
+     * @param  \Sofa\Revisionable\Tests\Laravel\EloquentRevisionableStub $model
      */
     function it_does_not_track_update_if_none_of_revisionable_attributes_were_changed($model)
     {
@@ -73,9 +73,9 @@ class ListenerSpec extends ObjectBehavior
     }
 
     /**
-     * @param  \Sofa\Revisionable\Tests\Laravel4\EloquentRevisionableStub $model
-     * @param  \Sofa\Revisionable\Tests\Laravel4\UserProviderStub $auth
-     * @param  \Sofa\Revisionable\Tests\Laravel4\LoggerStub $logger
+     * @param  \Sofa\Revisionable\Tests\Laravel\EloquentRevisionableStub $model
+     * @param  \Sofa\Revisionable\Tests\Laravel\UserProviderStub $auth
+     * @param  \Sofa\Revisionable\Tests\Laravel\LoggerStub $logger
      */
     function it_uses_model_connection_if_set($model, $auth, $logger)
     {

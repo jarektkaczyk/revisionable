@@ -7,7 +7,7 @@ return [
     | User provider (auth) implementation.
     |--------------------------------------------------------------------------
     |
-    | By default Laravel4 generic Illuminate\Auth\Guard.
+    | By default Laravel generic Illuminate\Auth\Guard.
     |
     | Supported options:
     |  - illuminate

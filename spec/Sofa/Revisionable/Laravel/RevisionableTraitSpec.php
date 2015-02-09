@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Sofa\Revisionable\Laravel4;
+namespace spec\Sofa\Revisionable\Laravel;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ class RevisionableTraitSpec extends ObjectBehavior
 {
     function let()
     {
-        $this->beAnInstanceOf('\Sofa\Revisionable\Tests\Laravel4\RevisionableTraitStub');
+        $this->beAnInstanceOf('\Sofa\Revisionable\Tests\Laravel\RevisionableTraitStub');
     }
 
     function it_implements_revisionable_interface()

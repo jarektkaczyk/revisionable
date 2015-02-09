@@ -1,4 +1,4 @@
-<?php namespace Sofa\Revisionable\Laravel5;
+<?php namespace Sofa\Revisionable\Laravel;
 
 use Sofa\Revisionable\Logger;
 use Illuminate\Database\ConnectionInterface;
@@ -82,7 +82,7 @@ class DbLogger implements Logger
      */
     protected function parseUser($user)
     {
-        return (is_string($user)) ? $user : ' -- ';
+        return (is_string($user) || is_numeric($user)) ? $user : ' -- ';
     }
 
     /**

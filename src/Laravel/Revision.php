@@ -1,4 +1,4 @@
-<?php namespace Sofa\Revisionable\Laravel4;
+<?php namespace Sofa\Revisionable\Laravel;
 
 use Illuminate\Database\Eloquent\Model;
 

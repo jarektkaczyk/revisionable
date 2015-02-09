@@ -1,4 +1,4 @@
-<?php namespace Sofa\Revisionable\Laravel5;
+<?php namespace Sofa\Revisionable\Laravel;
 
 use Sofa\Revisionable\Listener as ListenerInterface;
 use Sofa\Revisionable\UserProvider;

@@ -1,6 +1,6 @@
-<?php namespace Sofa\Revisionable\Tests\Laravel4;
+<?php namespace Sofa\Revisionable\Tests\Laravel;
 
-use Sofa\Revisionable\Laravel4\RevisionableTrait;
+use Sofa\Revisionable\Laravel\RevisionableTrait;
 use Sofa\Revisionable\Revisionable;
 use Illuminate\Database\Eloquent\Model;
 

@@ -1,9 +1,12 @@
-<?php namespace Sofa\Revisionable\Laravel5;
+<?php namespace Sofa\Revisionable\Laravel;
 
 use Illuminate\Support\ServiceProvider;
 use ReflectionClass;
 
-class RevisionableServiceProvider extends ServiceProvider
+/**
+ * @method void publishes(array $paths, $group = null)
+ */
+class FiveServiceProvider extends ServiceProvider
 {
     /**
      * Indicates if loading of the provider is deferred.
@@ -51,7 +54,7 @@ class RevisionableServiceProvider extends ServiceProvider
     protected function bindLogger()
     {
         $this->app->bindShared('revisionable.logger', function ($app) {
-            return new \Sofa\Revisionable\Laravel5\DbLogger($app['db']->connection());
+            return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection());
         });
     }
 
@@ -106,7 +109,7 @@ class RevisionableServiceProvider extends ServiceProvider
     protected function bindListener()
     {
         $this->app->bind('Sofa\Revisionable\Listener', function ($app) {
-            return new \Sofa\Revisionable\Laravel5\Listener($app['revisionable.userprovider']);
+            return new \Sofa\Revisionable\Laravel\Listener($app['revisionable.userprovider']);
         });
     }
 
@@ -117,7 +120,7 @@ class RevisionableServiceProvider extends ServiceProvider
      */
     protected function bindPresenter()
     {
-        $this->app->bind('Sofa\Revisionable\Presenter', 'Sofa\Revisionable\Laravel5\Presenter');
+        $this->app->bind('Sofa\Revisionable\Presenter', 'Sofa\Revisionable\Laravel\Presenter');
     }
 
     /**
@@ -129,7 +132,7 @@ class RevisionableServiceProvider extends ServiceProvider
     {
         $table = $this->app['config']->get('sofa_revisionable.table', 'revisions');
 
-        forward_static_call_array(['\Sofa\Revisionable\Laravel5\Revision', 'setCustomTable'], [$table]);
+        forward_static_call_array(['\Sofa\Revisionable\Laravel\Revision', 'setCustomTable'], [$table]);
     }
 
     /**
