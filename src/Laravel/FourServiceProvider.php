@@ -108,7 +108,13 @@ class FourServiceProvider extends ServiceProvider
      */
     protected function bindPresenter()
     {
-        $this->app->bind('Sofa\Revisionable\Presenter', 'Sofa\Revisionable\Laravel\Presenter');
+        $this->app->bind('Sofa\Revisionable\Presenter', function ($app, $parameters) {
+            $revision  = reset($parameters) ?: new Revision;
+
+            $templates = $app['config']->get('revisionable::config.templates', []);
+
+            return new \Sofa\Revisionable\Laravel\Presenter($revision, $templates);
+        });
     }
 
     /**

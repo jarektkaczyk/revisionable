@@ -13,17 +13,25 @@ class Presenter extends AbstractPresenter
     protected $config;
 
     /**
+     * Templates.
+     *
+     * @var array
+     */
+    protected $templates = [];
+
+    /**
      * Create a new revision presenter.
      *
      * @param \Sofa\Revisionable\Revision|array $revision
+     * @param array $templates
      */
-    public function __construct($revision, Config $config)
+    public function __construct($revision, array $templates)
     {
         if ($revision instanceof Revision) {
             $revision = $revision->getAttributes();
         }
 
-        $this->config = $config;
+        $this->templates = $templates;
 
         parent::__construct($revision);
     }
@@ -38,15 +46,15 @@ class Presenter extends AbstractPresenter
         $html = '<div>';
 
         foreach ($this->getDiff() as $key => $values) {
-            $html .= $this->config->get('revisionable::config.templates.diff.start');
+            $html .= array_get($this->templates, 'diff.start');
 
             $html .= str_replace(
                 [':key', ':old', ':new'],
                 [$key, $this->old($key), $this->new($key)],
-                $this->config->get('revisionable::config.templates.diff.body')
+                array_get($this->templates, 'diff.body')
             );
 
-            $html .= $this->config->get('revisionable::config.templates.diff.end');
+            $html .= array_get($this->templates, 'diff.end');
         }
 
         $html .= '</div>';
