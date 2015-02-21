@@ -3,22 +3,22 @@
 interface Listener
 {
     /**
-     * @return false|null
+     * @return null
      */
     public function onCreated($row);
 
     /**
-     * @return false|null
+     * @return null
      */
     public function onUpdated($row);
 
     /**
-     * @return false|null
+     * @return null
      */
     public function onDeleted($row);
 
     /**
-     * @return false|null
+     * @return null
      */
     public function onRestored($row);
 }

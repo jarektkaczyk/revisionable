@@ -27,48 +27,46 @@ class Listener implements ListenerInterface
      * Handle created event.
      *
      * @param  \Illuminate\Database\Eloquent\Model
-     * @return false|null
+     * @return null
      */
     public function onCreated($model)
     {
-        return $this->log('create', $model);
+        $this->log('create', $model);
     }
 
     /**
      * Handle updated event.
      *
      * @param  \Illuminate\Database\Eloquent\Model
-     * @return false|null
+     * @return null
      */
     public function onUpdated($model)
     {
-        if ( ! count($model->getDiff())) {
-            return false;
+        if (count($model->getDiff())) {
+            $this->log('update', $model);
         }
-
-        return $this->log('update', $model);
     }
 
     /**
      * Handle deleted event.
      *
      * @param  \Illuminate\Database\Eloquent\Model
-     * @return false|null
+     * @return null
      */
     public function onDeleted($model)
     {
-        return $this->log('delete', $model);
+        $this->log('delete', $model);
     }
 
     /**
      * Handle restored event.
      *
      * @param  \Illuminate\Database\Eloquent\Model
-     * @return false|null
+     * @return null
      */
     public function onRestored($model)
     {
-        return $this->log('restore', $model);
+        $this->log('restore', $model);
     }
 
     /**
@@ -86,14 +84,14 @@ class Listener implements ListenerInterface
      *
      * @param  string $type
      * @param  mixed $model
-     * @return false|null
+     * @return null
      */
     protected function log($type, $model)
     {
         $this->checkModel($model);
 
         if ( ! $model->isRevisioned()) {
-            return false;
+            return;
         }
 
         $table = $model->getTable();
