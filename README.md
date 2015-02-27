@@ -4,6 +4,69 @@
 
 Nice and easy way to handle revisions of your db.
 
+## Example display
+
+**Use the `Presenter`:**
+```
+// controller
+$revisions = DB::table('revisions')
+    ->orderBy('revisions.created_at', 'desc')
+    ->get();
+
+$revisions = array_map(function ($revision) {
+    return App::make('Sofa\Revisionable\Presenter', [(array) $revision]);
+}, $revisions);
+
+return $this->view->make('some.view', compact('revisions'));
+
+// view
+@foreach($revisions as $revision)
+    <tr>
+        <td class="revision-timestamp">{{ $revision->created_at }}</td>
+        <td class="revision-type">{{ $revision->type }}</td>
+        <td class="revision-table_name">{{ $revision->table_name }}</td>
+        <td class="revision-row_id">{{ $revision->row_id }}</td>
+        <td class="revision-diff"> {{ $revision->renderDiff() }} </td>
+        <td class="revision-user">{{ $revision->user_name }}</td>
+        <td class="revision-ip">{{ whois_link($revision->ip) }}</td>
+    </tr>
+@endforeach
+```
+
+And you get something like this:
+
+![image](https://cloud.githubusercontent.com/assets/6928818/6411544/ec10125a-be79-11e4-86a2-b477a2e9ac18.png)
+
+
+**Also you can show history for a model as easily as below:**
+```
+// controller
+// get revision history for given model and use the presenter
+$revisions = $account->revisions->map(function ($revision) {
+  return App::make('Sofa\Revisionable\Presenter', [$revision]); 
+});
+
+// show all the fields
+@foreach ($revisions as $revision )
+  @foreach ($revision->getUpdated() as $field) // all updated field 
+    <li>
+        {{ $revision->user }} changed {{ $field }} 
+        from {{ $revision->old($field) }} to {{ $revision->new($field) }}
+    </li>
+  @endforeach
+@endforeach
+
+
+// or only specified $field that you need:
+@foreach ($revisions as $revision ) @if (in_array($field, $revision->getUpdated()))
+    <li>
+        On {{$revision->created_at}} user {{ $revision->user }} 
+        changed {{ $field }} 
+        from {{ $revision->old($field) }} to {{ $revision->new($field) }}
+    </li>
+@endif @endforeach
+```
+
 ## Why?
 
 There is already pretty popular package [VentureCraft/Revisionable](https://github.com/VentureCraft/revisionable) handling data revisions, so you may ask why bother? So here a few things:
