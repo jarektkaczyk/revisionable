@@ -38,7 +38,7 @@ class IlluminateAuth implements UserProvider
      */
     public function getUser()
     {
-        return $this->getUserFieldValue($user);
+        return $this->getUserFieldValue();
     }
 
     /**

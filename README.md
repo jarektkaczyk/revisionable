@@ -162,6 +162,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | User field to be saved as the author of tracked action.
+    |--------------------------------------------------------------------------
+    |
+    | By default:
+    |
+    |  - id for illuminate
+    |  - login field (email) for sentry
+    */
+    'userfield'    => null,
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Table used for the revisions.
     |--------------------------------------------------------------------------
     */
@@ -297,6 +310,19 @@ return [
     |  - sentry
     */
     'userprovider' => 'illuminate',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | User field to be saved as the author of tracked action.
+    |--------------------------------------------------------------------------
+    |
+    | By default:
+    |
+    |  - id for illuminate
+    |  - login field (email) for sentry
+    */
+    'userfield'    => null,
 
 
     /*
