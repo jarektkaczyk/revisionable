@@ -97,7 +97,9 @@ class FiveServiceProvider extends ServiceProvider
     protected function bindGuardProvider()
     {
         $this->app->bindShared('revisionable.userprovider', function ($app) {
-            return new \Sofa\Revisionable\Adapters\IlluminateAuth($app['auth']->driver());
+            $field = $app['config']->get('sofa_revisionable.userfield');
+
+            return new \Sofa\Revisionable\Adapters\IlluminateAuth($app['auth']->driver(), $field);
         });
     }
 

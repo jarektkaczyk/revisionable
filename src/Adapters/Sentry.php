@@ -13,13 +13,22 @@ class Sentry implements UserProvider
     protected $provider;
     
     /**
+     * Field from the user to be saved as author of the action.
+     *
+     * @var string
+     */
+    protected $field;
+    
+    /**
      * Create adapter instance for Sentry.
      *
      * @param SentryProvider $provider
+     * @param string $field
      */
-    public function __construct(SentryProvider $provider)
+    public function __construct(SentryProvider $provider, $field = null)
     {
         $this->provider = $provider;
+        $this->field    = $field;
     }
 
     /**
@@ -29,6 +38,19 @@ class Sentry implements UserProvider
      */
     public function getUser()
     {
-        return ($user = $this->provider->getUser()) ? $user->getLogin() : null;
+        return $this->getUserFieldValue($user);
+    }
+
+    /**
+     * Get value from the user to be saved as the author.
+     * 
+     * @return string|null
+     */
+    protected function getUserFieldValue()
+    {
+        if ($user = $this->provider->getUser())
+        {
+            return ($field = $this->field) ? (string) $user->{$field} : $user->getLogin();
+        }
     }
 }

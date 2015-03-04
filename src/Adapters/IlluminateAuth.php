@@ -13,13 +13,22 @@ class IlluminateAuth implements UserProvider
     protected $provider;
     
     /**
+     * Field from the user to be saved as author of the action.
+     *
+     * @var string
+     */
+    protected $field;
+    
+    /**
      * Create adapter instance for Illuminate Guard.
      *
      * @param \Illuminate\Auth\Guard $provider
+     * @param string $field
      */
-    public function __construct(Guard $provider)
+    public function __construct(Guard $provider, $field = null)
     {
         $this->provider = $provider;
+        $this->field    = $field;
     }
 
     /**
@@ -29,6 +38,19 @@ class IlluminateAuth implements UserProvider
      */
     public function getUser()
     {
-        return ($user = $this->provider->getUser()) ? $user->getAuthIdentifier() : null;
+        return $this->getUserFieldValue($user);
+    }
+
+    /**
+     * Get value from the user to be saved as the author.
+     * 
+     * @return string|null
+     */
+    protected function getUserFieldValue()
+    {
+        if ($user = $this->provider->user())
+        {
+            return ($field = $this->field) ? (string) $user->{$field} : $user->getAuthIdentifier();
+        }
     }
 }
