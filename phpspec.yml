@@ -1,0 +1,4 @@
+namespace: Sofa\Revisionable
+psr4_prefix: Sofa\Revisionable
+src_path: src
+spec_path: spec

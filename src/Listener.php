@@ -1,10 +1,24 @@
 <?php namespace Sofa\Revisionable;
 
-interface Listener {
+interface Listener
+{
+    /**
+     * @return null
+     */
+    public function onCreated(Revisionable $row);
 
-	public function onCreated($row);
-	public function onUpdated($row);
-	public function onDeleted($row);
-	public function onRestored($row);
+    /**
+     * @return null
+     */
+    public function onUpdated(Revisionable $row);
 
+    /**
+     * @return null
+     */
+    public function onDeleted(Revisionable $row);
+
+    /**
+     * @return null
+     */
+    public function onRestored(Revisionable $row);
 }

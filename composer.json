@@ -14,18 +14,25 @@
         "php": ">=5.4"
     },
     "require-dev": {
+        "phpspec/phpspec": "~2.0@dev",
         "phpunit/phpunit": "~4.0",
-        "mockery/mockery": "~0.9",
-        "squizlabs/php_codesniffer": "~1.5"
+        "mockery/mockery": "*",
+        "squizlabs/php_codesniffer": "~2.0",
+        "illuminate/database": "~5.0",
+        "illuminate/auth": "~5.0",
+        "cartalyst/sentry": "~2.0"
     },
     "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
         "psr-4": {
             "Sofa\\Revisionable\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Sofa\\Revisionable\\Test\\": "test"
+            "Sofa\\Revisionable\\Tests\\": "tests"
         }
     }
 }
