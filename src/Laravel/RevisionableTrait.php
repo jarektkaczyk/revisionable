@@ -341,7 +341,7 @@ trait RevisionableTrait
     {
         $presenter = $this->getRevisionPresenter();
 
-        return (is_subclass_of($presenter, Presenter::class) || $presenter == Presenter::class)
+        return (is_subclass_of($presenter, $this->getDefaultRevisionPresenter()) || $presenter == $this->getDefaultRevisionPresenter())
             ? $presenter::make($revision, $this)
             : $revision;
     }
