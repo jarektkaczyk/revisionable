@@ -70,6 +70,10 @@ class ServiceProvider extends BaseProvider
                 $this->bindSentryProvider();
                 break;
 
+            case 'sentinel':
+                $this->bindSentinelProvider();
+                break;
+
             default:
                 $this->bindGuardProvider();
         }
@@ -86,6 +90,20 @@ class ServiceProvider extends BaseProvider
             $field = $app['config']->get('sofa_revisionable.userfield');
 
             return new \Sofa\Revisionable\Adapters\Sentry($app['sentry'], $field);
+        });
+    }
+
+    /**
+     * Bind adapter for Sentinel to the IoC.
+     *
+     * @return void
+     */
+    protected function bindSentinelProvider()
+    {
+        $this->app->bindShared('revisionable.userprovider', function ($app) {
+            $field = $app['config']->get('sofa_revisionable.userfield');
+
+            return new \Sofa\Revisionable\Adapters\Sentinel($app['sentinel'], $field);
         });
     }
 
