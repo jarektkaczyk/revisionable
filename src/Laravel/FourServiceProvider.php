@@ -60,6 +60,10 @@ class FourServiceProvider extends ServiceProvider
                 $this->bindSentryProvider();
                 break;
 
+            case 'sentinel':
+                $this->bindSentinelProvider();
+                break;
+
             default:
                 $this->bindGuardProvider();
         }
@@ -74,6 +78,18 @@ class FourServiceProvider extends ServiceProvider
     {
         $this->app->bindShared('revisionable.userprovider', function ($app) {
             return new \Sofa\Revisionable\Adapters\Sentry($app['sentry']);
+        });
+    }
+
+    /**
+     * Bind adapter for Sentinel to the IoC.
+     *
+     * @return void
+     */
+    protected function bindSentinelProvider()
+    {
+        $this->app->bindShared('revisionable.userprovider', function ($app) {
+            return new \Sofa\Revisionable\Adapters\Sentinel($app['sentinel']);
         });
     }
 
