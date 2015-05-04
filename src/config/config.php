@@ -12,6 +12,7 @@ return [
     | Supported options:
     |  - illuminate
     |  - sentry
+    |  - sentinel
     */
     'userprovider' => 'illuminate',
 
@@ -24,7 +25,7 @@ return [
     | By default:
     |
     |  - id for illuminate
-    |  - login field (email) for sentry
+    |  - login field (email) for sentry/sentinel
     */
     'userfield'    => null,
 

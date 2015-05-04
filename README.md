@@ -4,13 +4,13 @@
 
 Nice and easy way to handle revisions of your db.
 
-* Handles the revisions in **bulk** - one entry covers all the created/updated fields, what makes it really **easy to eg. compare 2 given versions** or get all the data changed during single action. 
+* Handles the revisions in **bulk** - one entry covers all the created/updated fields, what makes it really **easy to eg. compare 2 given versions** or get all the data changed during single action.
 
 
 ## Requirements
 
 * This package requires PHP 5.4+
-* Currently it works out of the box with Laravel5 + generic Illuminate Guard OR cartalyst/sentry 2
+* Currently it works out of the box with Laravel5 + generic Illuminate Guard OR cartalyst/sentry 2/sentinel 2
 
 
 ## Example display
@@ -62,6 +62,7 @@ return [
     | Supported options:
     |  - illuminate
     |  - sentry
+    |  - sentinel
     */
     'userprovider' => 'illuminate',
 
@@ -74,7 +75,7 @@ return [
     | By default:
     |
     |  - id for illuminate
-    |  - login field (email) for sentry
+    |  - login field (email) for sentry/sentinel
     */
     'userfield'    => null,
 
