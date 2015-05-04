@@ -90,7 +90,7 @@ Disclaimer: This package is not a fork, nor does it use any piece of code from t
 ## Requirements
 
 * This package requires PHP 5.4+
-* Currently it works out of the box with Laravel4 + generic Auth guard OR cartalyst/sentry 2
+* Currently it works out of the box with Laravel4 + generic Auth guard OR cartalyst/sentry 2/sentinel 2
 
 ## Upgrade from 0.* to 0.2
 
@@ -156,6 +156,7 @@ return [
     | Supported options:
     |  - illuminate
     |  - sentry
+    |  - sentinel
     */
     'userprovider' => 'illuminate',
 
@@ -168,7 +169,7 @@ return [
     | By default:
     |
     |  - id for illuminate
-    |  - login field (email) for sentry
+    |  - login field (email) for sentry/sentinel
     */
     'userfield'    => null,
 
@@ -308,6 +309,7 @@ return [
     | Supported options:
     |  - illuminate
     |  - sentry
+    |  - sentinel
     */
     'userprovider' => 'illuminate',
 
@@ -320,7 +322,7 @@ return [
     | By default:
     |
     |  - id for illuminate
-    |  - login field (email) for sentry
+    |  - login field (email) for sentry/sentinel
     */
     'userfield'    => null,
 
