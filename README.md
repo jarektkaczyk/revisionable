@@ -2,7 +2,7 @@
 
 [![Code quality](https://scrutinizer-ci.com/g/jarektkaczyk/revisionable/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/jarektkaczyk/revisionable) [![Latest Stable Version](https://poser.pugx.org/sofa/revisionable/v/stable.svg)](https://packagist.org/packages/sofa/revisionable) [![Downloads](https://poser.pugx.org/sofa/revisionable/downloads.svg)](https://packagist.org/packages/sofa/revisionable)
 
-Nice and easy way to handle revisions of your db.
+Easy and nice way to handle revisions of your db.
 
 ## Example display
 
