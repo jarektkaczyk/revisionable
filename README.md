@@ -13,8 +13,6 @@ Nice and easy way to handle revisions of your db.
 * Currently it works out of the box with Laravel5 + generic Illuminate Guard OR cartalyst/sentry 2/sentinel 2
 
 
-## Example display
-
 ## Usage (Laravel5 basic example - see Customization below as well)
 
 ### 1. Download the package or require in your `composer.json`:
