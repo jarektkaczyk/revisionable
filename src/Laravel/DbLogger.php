@@ -1,5 +1,6 @@
 <?php namespace Sofa\Revisionable\Laravel;
 
+use \Config;
 use Sofa\Revisionable\Logger;
 use Illuminate\Database\ConnectionInterface;
 
@@ -46,7 +47,14 @@ class DbLogger implements Logger
 
         $connection = $this->getCurrentConnection();
 
-        $connection->table('revisions')->insert([
+        $revisionsTableName =
+            // Laravel4
+            Config::get('revisionable::config.table')
+
+            // Laravel5
+            ?: Config::get('sofa_revisionable.table', 'revisions');
+
+        $connection->table($revisionsTableName)->insert([
             'type'         => substr($type, 0, 255),
             'table_name'   => substr($table, 0, 255),
             'row_id'       => substr($id, 0, 255),
