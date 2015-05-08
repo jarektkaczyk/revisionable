@@ -59,7 +59,7 @@ class ListenerSpec extends ObjectBehavior
     {
         $model->isRevisioned()->shouldBeCalled()->willReturn(false);
 
-        $this->onCreated($model)->shouldReturn(false);
+        $this->onCreated($model)->shouldReturn(null);
     }
 
     /**
@@ -69,7 +69,7 @@ class ListenerSpec extends ObjectBehavior
     {
         $model->getDiff()->shouldBeCalled()->willReturn([]);
 
-        $this->onUpdated($model)->shouldReturn(false);
+        $this->onUpdated($model)->shouldReturn(null);
     }
 
     /**

@@ -53,8 +53,10 @@ class FiveServiceProvider extends ServiceProvider
      */
     protected function bindLogger()
     {
-        $this->app->bindShared('revisionable.logger', function ($app) {
-            return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection());
+        $table = $this->app['config']->get('sofa_revisionable.table', 'revisions');
+
+        $this->app->bindShared('revisionable.logger', function ($app) use ($table) {
+            return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection(), $table);
         });
     }
 
@@ -140,7 +142,7 @@ class FiveServiceProvider extends ServiceProvider
     {
         $this->app->bind('Sofa\Revisionable\Presenter', function ($app, $parameters) {
             $revision  = reset($parameters) ?: new Revision;
-            
+
             $templates = $app['config']->get('sofa_revisionable.templates', []);
 
             return new \Sofa\Revisionable\Laravel\Presenter($revision, $templates);

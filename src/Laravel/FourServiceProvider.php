@@ -41,8 +41,10 @@ class FourServiceProvider extends ServiceProvider
      */
     protected function bindLogger()
     {
-        $this->app->bindShared('revisionable.logger', function ($app) {
-            return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection());
+        $table = $this->app['config']->get('revisionable::config.table', 'revisions');
+
+        $this->app->bindShared('revisionable.logger', function ($app) use ($table) {
+            return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection(), $table);
         });
     }
 
@@ -146,7 +148,7 @@ class FourServiceProvider extends ServiceProvider
      */
     protected function bootModel()
     {
-        $table = $this->app['config']->get('revisionable::config.table');
+        $table = $this->app['config']->get('revisionable::config.table', 'revisions');
 
         forward_static_call_array(['\Sofa\Revisionable\Laravel\Revision', 'setCustomTable'], [$table]);
     }

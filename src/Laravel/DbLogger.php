@@ -20,13 +20,22 @@ class DbLogger implements Logger
     protected $defaultConnection;
 
     /**
+     * Revisions table name.
+     *
+     * @var string
+     */
+    protected $table;
+
+    /**
      * Create a new DbLogger.
      *
      * @param \Illuminate\Database\ConnectionInterface $connection
+     * @param string $table
      */
-    public function __construct(ConnectionInterface $connection)
+    public function __construct(ConnectionInterface $connection, $table)
     {
         $this->defaultConnection = $connection;
+        $this->table             = $table;
     }
 
     /**
@@ -46,7 +55,7 @@ class DbLogger implements Logger
 
         $connection = $this->getCurrentConnection();
 
-        $connection->table('revisions')->insert([
+        $connection->table($this->table)->insert([
             'type'         => substr($type, 0, 255),
             'table_name'   => substr($table, 0, 255),
             'row_id'       => substr($id, 0, 255),
