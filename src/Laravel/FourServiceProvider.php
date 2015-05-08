@@ -77,7 +77,9 @@ class FourServiceProvider extends ServiceProvider
     protected function bindSentryProvider()
     {
         $this->app->bindShared('revisionable.userprovider', function ($app) {
-            return new \Sofa\Revisionable\Adapters\Sentry($app['sentry']);
+            $field = $app['config']->get('revisionable::config.userfield');
+
+            return new \Sofa\Revisionable\Adapters\Sentry($app['sentry'], $field);
         });
     }
 
@@ -89,7 +91,9 @@ class FourServiceProvider extends ServiceProvider
     protected function bindSentinelProvider()
     {
         $this->app->bindShared('revisionable.userprovider', function ($app) {
-            return new \Sofa\Revisionable\Adapters\Sentinel($app['sentinel']);
+            $field = $app['config']->get('revisionable::config.userfield');
+
+            return new \Sofa\Revisionable\Adapters\Sentinel($app['sentinel'], $field);
         });
     }
 
@@ -101,7 +105,9 @@ class FourServiceProvider extends ServiceProvider
     protected function bindGuardProvider()
     {
         $this->app->bindShared('revisionable.userprovider', function ($app) {
-            return new \Sofa\Revisionable\Adapters\IlluminateAuth($app['auth']->driver());
+            $field = $app['config']->get('revisionable::config.userfield');
+
+            return new \Sofa\Revisionable\Adapters\IlluminateAuth($app['auth']->driver(), $field);
         });
     }
 
