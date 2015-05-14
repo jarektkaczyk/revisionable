@@ -28,7 +28,7 @@ Nice and easy way to handle revisions of your db.
 
 ### 2. Add the service provider to your `app/config/app.php`:
 
-```
+```php
     'providers' => array(
 
         ...
@@ -45,7 +45,7 @@ Nice and easy way to handle revisions of your db.
 
 this will create `config/sofa_revisionable.php` file, where you can adjust a few settings:
 
-```
+```php
 <?php
 
 return [
@@ -100,7 +100,7 @@ You can provide additional `--database` param if you want the migration to be ru
 
 ### 5. Add revisionable trait and contract to the models you wish to keep track of:
 
-```
+```php
 <?php namespace App;
 
 use Sofa\Revisionable\Laravel\RevisionableTrait; // trait
@@ -127,7 +127,7 @@ And that's all to get your started!
 ## Customization in L5
 
 **Default behaviour**:
-```
+```php
 namespace App\Models;
 
 use Sofa\Revisionable\Revisionable;
@@ -141,7 +141,7 @@ class Ticket extends \Eloquent implements Revisionable {
 ```
 
 
-```
+```php
 $ php artisan tinker
 
 >>> $ticket = App\Models\Ticket::first();
@@ -197,7 +197,7 @@ $ php artisan tinker
 
 But here's where you can leverage bundled `Presenter` in order to make useful adjustments:
 
-```
+```php
 namespace App\Models;
 
 use Sofa\Revisionable\Revisionable;
@@ -212,7 +212,7 @@ class Ticket extends \Eloquent implements Revisionable {
 }
 ```
 
-```
+```php
 namespace App\Presenters\Revisions;
 
 use Sofa\Revisionable\Laravel\Presenter;
