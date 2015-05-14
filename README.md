@@ -7,7 +7,7 @@ Easy and nice way to handle revisions of your db.
 ## Example display
 
 **Use the `Presenter`:**
-```
+```php
 // controller
 $revisions = DB::table('revisions')
     ->orderBy('revisions.created_at', 'desc')
@@ -39,7 +39,7 @@ And you get something like this:
 
 
 **Also you can show history for a model as easily as below:**
-```
+```php
 // controller
 // get revision history for given model and use the presenter
 $revisions = $account->revisions->map(function ($revision) {
@@ -124,7 +124,7 @@ And it's done!.
 
 ### 2. Add the service provider to your `app/config/app.php`:
 
-```
+```php
     'providers' => array(
 
         ...
@@ -141,7 +141,7 @@ And it's done!.
 
 this will create `config/sofa_revisionable.php` file, where you can adjust a few settings:
 
-```
+```php
 <?php
 
 return [
@@ -220,7 +220,7 @@ You can provide additional `--database` param if you want the migration to be ru
 
 ### 5. Add revisionable trait to the models you wish to keep track of and set the properties as needed:
 
-```
+```php
 <?php
 
 use Sofa\Revisionable\Laravel\RevisionableTrait;
@@ -277,7 +277,7 @@ Et voila!
 
 ### 2. Add the service provider to your `app/config/app.php`:
 
-```
+```php
     'providers' => array(
 
         ...
@@ -294,7 +294,7 @@ Et voila!
 
 this will create `app/config/packages/sofa/revisionable/config.php` file, where you can adjust a few settings:
 
-```
+```php
 <?php
 
 return [
@@ -373,7 +373,7 @@ You can provide additional `--database` param if you want the migration to be ru
 
 ### 5. Add revisionable trait to the models you wish to keep track of and set the properties as needed:
 
-```
+```php
 <?php
 
 use Sofa\Revisionable\Laravel\RevisionableTrait;
