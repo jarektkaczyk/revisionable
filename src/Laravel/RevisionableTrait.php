@@ -1,6 +1,7 @@
 <?php namespace Sofa\Revisionable\Laravel;
 
 use \App;
+use DateTime;
 
 /**
  * @property int   revisionsCount
@@ -169,9 +170,7 @@ trait RevisionableTrait
     {
         $attributes = $this->getRevisionableItems($this->original);
 
-        return array_map(function ($attribute) {
-            return (string) $attribute;
-        }, $attributes);
+        return $this->prepareAttributes($attributes);
     }
 
     /**
@@ -183,8 +182,21 @@ trait RevisionableTrait
     {
         $attributes = $this->getRevisionableItems($this->attributes);
 
+        return $this->prepareAttributes($attributes);
+    }
+
+    /**
+     * Stringify revisionable attributes.
+     *
+     * @param  array  $attributes
+     * @return array
+     */
+    protected function prepareAttributes(array $attributes)
+    {
         return array_map(function ($attribute) {
-            return (string) $attribute;
+            return ($attribute instanceof DateTime)
+                ? $this->fromDateTime($attribute)
+                : (string) $attribute;
         }, $attributes);
     }
 
@@ -383,9 +395,9 @@ trait RevisionableTrait
         if ( ! array_key_exists('revisionsCount', $this->relations)) {
             $this->load('revisionsCount');
         }
-    
+
         $relation = $this->getRelation('revisionsCount');
-    
+
         return ($relation) ? (int) $relation->aggregate : 0;
     }
 
