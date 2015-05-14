@@ -9,7 +9,7 @@ use \App;
  * @property array attributes
  * @property array attributes
  * @property array revisionableConnection
- * 
+ *
  * @method void created(\Closure|string $callback)
  * @method void updated(\Closure|string $callback)
  * @method void deleted(\Closure|string $callback)
@@ -164,9 +164,15 @@ trait RevisionableTrait
     {
         $attributes = $this->getRevisionableItems($this->original);
 
-        return array_map(function ($attribute) {
-            return (string) $attribute;
-        }, $attributes);
+        array_walk($attributes, function (&$value, $key) {
+            if (in_array($key, $this->dates)) {
+                $value = $value->format($this->getDateFormat() || 'Y-m-d H:i:s');
+            } else {
+                $value = (string) $value;
+            }
+        });
+
+        return $attributes;
     }
 
     /**
@@ -178,9 +184,15 @@ trait RevisionableTrait
     {
         $attributes = $this->getRevisionableItems($this->attributes);
 
-        return array_map(function ($attribute) {
-            return (string) $attribute;
-        }, $attributes);
+        array_walk($attributes, function (&$value, $key) {
+            if (in_array($key, $this->dates)) {
+                $value = $value->format($this->getDateFormat() || 'Y-m-d H:i:s');
+            } else {
+                $value = (string) $value;
+            }
+        });
+
+        return $attributes;
     }
 
     /**
@@ -298,9 +310,9 @@ trait RevisionableTrait
         if ( ! array_key_exists('revisionsCount', $this->relations)) {
             $this->load('revisionsCount');
         }
-    
+
         $relation = $this->getRelation('revisionsCount');
-    
+
         return ($relation) ? (int) $relation->aggregate : 0;
     }
 
