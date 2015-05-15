@@ -2,7 +2,6 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use \Config;
 
 class CreateSofaRevisionsTable extends Migration
 {
@@ -12,16 +11,16 @@ class CreateSofaRevisionsTable extends Migration
      * @var string
      */
     protected $table;
-    
+
     public function __construct()
     {
         $this->table =
-        
+
             // Laravel4
-            Config::get('revisionable::config.table')
+            \Config::get('revisionable::config.table')
 
             // Laravel5
-            ?: Config::get('sofa_revisionable.table', 'revisions');
+            ?: \Config::get('sofa_revisionable.table', 'revisions');
     }
 
     /**
