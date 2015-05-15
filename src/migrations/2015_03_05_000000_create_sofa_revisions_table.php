@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use \Config;
+use Config;
 
 class CreateSofaRevisionsTable extends Migration
 {
@@ -12,7 +12,7 @@ class CreateSofaRevisionsTable extends Migration
      * @var string
      */
     protected $table;
-    
+
     public function __construct()
     {
         $this->table = Config::get('sofa_revisionable.table', 'revisions');

@@ -1,6 +1,6 @@
 <?php namespace Sofa\Revisionable\Laravel;
 
-use \App;
+use App;
 use DateTime;
 
 /**
