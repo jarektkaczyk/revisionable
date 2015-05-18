@@ -76,6 +76,10 @@ class ServiceProvider extends BaseProvider
                 $this->bindSentinelProvider();
                 break;
 
+            case 'jwt-auth':
+                $this->bindJwtAuthProvider();
+                break;
+
             default:
                 $this->bindGuardProvider();
         }
@@ -106,6 +110,20 @@ class ServiceProvider extends BaseProvider
             $field = $app['config']->get('sofa_revisionable.userfield');
 
             return new \Sofa\Revisionable\Adapters\Sentinel($app['sentinel'], $field);
+        });
+    }
+
+    /**
+     * Bind adapter for JWT Auth to the IoC.
+     *
+     * @return void
+     */
+    private function bindJwtAuthProvider()
+    {
+        $this->app->bindShared('revisionable.userprovider', function ($app) {
+            $field = $app['config']->get('sofa_revisionable.userfield');
+
+            return new \Sofa\Revisionable\Adapters\JwtAuth($app['tymon.jwt.auth'], $field);
         });
     }
 
