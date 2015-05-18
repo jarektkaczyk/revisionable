@@ -13,6 +13,7 @@ return [
     |  - illuminate
     |  - sentry
     |  - sentinel
+    |  - jwt-auth
     */
     'userprovider' => 'illuminate',
 

@@ -10,7 +10,7 @@ Nice and easy way to handle revisions of your db.
 ## Requirements
 
 * This package requires PHP 5.4+
-* Currently it works out of the box with Laravel5 + generic Illuminate Guard OR cartalyst/sentry 2/sentinel 2
+* Currently it works out of the box with Laravel5 + generic Illuminate Guard, tymon/jwt-auth OR cartalyst/sentry 2/sentinel 2
 
 
 ## Usage (Laravel5 basic example - see Customization below as well)
@@ -61,6 +61,7 @@ return [
     |  - illuminate
     |  - sentry
     |  - sentinel
+    |  - jwt-auth
     */
     'userprovider' => 'illuminate',
 
@@ -74,6 +75,7 @@ return [
     |
     |  - id for illuminate
     |  - login field (email) for sentry/sentinel
+    |  - id or ANY field in User model for tymon/jwt-auth
     */
     'userfield'    => null,
 
