@@ -12,7 +12,7 @@ class Listener implements ListenerInterface
      * @var mixed
      */
     protected $userProvider;
-    
+
     /**
      * Create new listener.
      *
@@ -107,6 +107,9 @@ class Listener implements ListenerInterface
             case 'update':
                 $old = $model->getOldAttributes();
                 $new = $model->getNewAttributes();
+                break;
+            case 'delete':
+                $old = $model->getOldAttributes();
                 break;
         }
 
