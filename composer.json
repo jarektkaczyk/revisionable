@@ -2,6 +2,17 @@
     "name": "sofa/revisionable",
     "description": "Nice and easy way to handle revisions of your db.",
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/jarektkaczyk/revisionable/issues",
+        "source": "https://github.com/jarektkaczyk/revisionable"
+    },
+    "keywords": [
+        "laravel",
+        "eloquent",
+        "revisionable",
+        "revision",
+        "history"
+    ],
     "authors": [
         {
             "name": "Jarek Tkaczyk",

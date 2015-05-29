@@ -90,7 +90,7 @@ class Revision extends Model
     {
         return (array) json_decode($new);
     }
- 
+
     /**
      * Get single value from the new/old array.
      *
@@ -121,7 +121,7 @@ class Revision extends Model
      */
     public static function setCustomTable($table)
     {
-        if ( ! isset(static::$customTable)) {
+        if (!isset(static::$customTable)) {
             static::$customTable = $table;
         }
     }

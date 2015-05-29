@@ -110,7 +110,7 @@ trait RevisionableTrait
      */
     public static function bootLogger()
     {
-        if ( ! static::$revisionableLogger) {
+        if (!static::$revisionableLogger) {
             static::setRevisionableLogger(App::make('revisionable.logger'));
         }
     }
@@ -353,9 +353,10 @@ trait RevisionableTrait
     {
         $presenter = $this->getRevisionPresenter();
 
-        return (is_subclass_of($presenter, $this->getDefaultRevisionPresenter()) || $presenter == $this->getDefaultRevisionPresenter())
-            ? $presenter::make($revision, $this)
-            : $revision;
+        return (is_subclass_of($presenter, $this->getDefaultRevisionPresenter())
+                || $presenter == $this->getDefaultRevisionPresenter())
+                    ? $presenter::make($revision, $this)
+                    : $revision;
     }
 
     /**
@@ -367,7 +368,7 @@ trait RevisionableTrait
      */
     protected function loadRelationIfNecessary($relation)
     {
-        if ( ! array_key_exists($relation, $this->relations)) {
+        if (!array_key_exists($relation, $this->relations)) {
             $this->load($relation);
         }
     }
@@ -392,7 +393,7 @@ trait RevisionableTrait
      */
     public function getRevisionsCountAttribute()
     {
-        if ( ! array_key_exists('revisionsCount', $this->relations)) {
+        if (!array_key_exists('revisionsCount', $this->relations)) {
             $this->load('revisionsCount');
         }
 
@@ -490,7 +491,7 @@ trait RevisionableTrait
      */
     public function getRevisionPresenter()
     {
-        if ( ! isset($this->revisionPresenter)) {
+        if (!isset($this->revisionPresenter)) {
             return null;
         }
 

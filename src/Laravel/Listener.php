@@ -12,7 +12,7 @@ class Listener implements ListenerInterface
      * @var mixed
      */
     protected $userProvider;
-    
+
     /**
      * Create new listener.
      *
@@ -88,7 +88,7 @@ class Listener implements ListenerInterface
      */
     protected function log($action, Revisionable $revisioned)
     {
-        if ( ! $revisioned->isRevisioned()) {
+        if (!$revisioned->isRevisioned()) {
             return;
         }
 
@@ -101,6 +101,9 @@ class Listener implements ListenerInterface
         switch ($action) {
             case 'created':
                 $new = $revisioned->getNewAttributes();
+                break;
+            case 'deleted':
+                $old = $revisioned->getOldAttributes();
                 break;
             case 'updated':
                 $old = $revisioned->getOldAttributes();

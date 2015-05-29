@@ -141,7 +141,7 @@ class Presenter
 
         $needle = $this->passThrough[$key];
 
-        return $this->dataGet($revisioned, $needle, $version);
+        return $this->dataGet($revisioned, $needle);
     }
 
     /**
@@ -149,10 +149,9 @@ class Presenter
      *
      * @param  mixed  $target
      * @param  string $key
-     * @param  string $version
      * @return mixed
      */
-    protected function dataGet($target, $key, $version)
+    protected function dataGet($target, $key)
     {
         foreach (explode('.', $key) as $segment) {
             if ($target instanceof Revisionable) {
@@ -168,7 +167,7 @@ class Presenter
                 $target = null;
             }
 
-            if ( ! $target) {
+            if (!$target) {
                 return;
             }
         }
@@ -230,7 +229,7 @@ class Presenter
      */
     protected function getVersion($version)
     {
-        if ( ! $this->{$version.'Version'}) {
+        if (!$this->{$version.'Version'}) {
             $revisioned = get_class($this->revisioned);
 
             $revision = new $revisioned;
