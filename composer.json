@@ -31,7 +31,8 @@
         "squizlabs/php_codesniffer": "~2.0",
         "illuminate/database": "~5.0",
         "illuminate/auth": "~5.0",
-        "cartalyst/sentry": "~2.0"
+        "cartalyst/sentry": "~2.0",
+        "tymon/jwt-auth": "^0.5.3"
     },
     "autoload": {
         "classmap": [
