@@ -54,4 +54,15 @@ class JwtAuth implements UserProvider
             return ($field = $this->field) ? (string)$user->{$field} : $this->provider->getIdentifier();
         }
     }
+
+    /**
+     * @return object|array|null
+     */
+    public function getUserModel($id = null){
+        if($id) {
+            return $this->provider->fromUser((object) [$this->provider->getIdentifier() => $id])->toUser();
+        } else {
+            return $this->provider->parseToken()->toUser();
+        }
+    }
 }

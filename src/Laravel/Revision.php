@@ -127,6 +127,15 @@ class Revision extends Model
     }
 
     /**
+     * Get user model from user provider
+     * @return mixed
+     */
+    public function getUserModel()
+    {
+        return app('revisionable.userprovider')->getUserModel($this->user);
+    }
+
+    /**
      * Handle dynamic method calls.
      *
      * @param  string $method

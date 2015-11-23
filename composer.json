@@ -36,9 +36,6 @@
         "cartalyst/sentinel": "^2.0"
     },
     "autoload": {
-        "classmap": [
-            "src/migrations"
-        ],
         "psr-4": {
             "Sofa\\Revisionable\\": "src"
         }

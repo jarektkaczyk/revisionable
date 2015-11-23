@@ -52,4 +52,11 @@ class Sentinel implements UserProvider
             return ($field = $this->field) ? (string) $user->{$field} : $user->getUserLogin();
         }
     }
+
+    /**
+     * @return object|array|null
+     */
+    public function getUserModel($id = null){
+        return ($id) ? $this->provider->getUserRepository()->findByCredentials([$this->field => $id]) : $this->provider->getUser();
+    }
 }

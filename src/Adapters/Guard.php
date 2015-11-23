@@ -11,14 +11,14 @@ class Guard implements UserProvider
      * @var \Illuminate\Auth\Guard
      */
     protected $provider;
-    
+
     /**
      * Field from the user to be saved as author of the action.
      *
      * @var string
      */
     protected $field;
-    
+
     /**
      * Create adapter instance for Illuminate Guard.
      *
@@ -51,5 +51,13 @@ class Guard implements UserProvider
         if ($user = $this->provider->user()) {
             return ($field = $this->field) ? (string) $user->{$field} : $user->getAuthIdentifier();
         }
+    }
+    /**
+     * Return user model
+     * @return object|array|null
+     */
+    public function getUserModel($id = null)
+    {
+        return ($id) ? $this->provider->getProvider()->retrieveById($id) : $this->provider->user();
     }
 }

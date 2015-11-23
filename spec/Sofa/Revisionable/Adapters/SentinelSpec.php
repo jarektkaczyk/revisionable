@@ -45,4 +45,32 @@ class SentinelSpec extends ObjectBehavior
 
     	$this->getUser()->shouldReturn('john@doe.com');
     }
+
+    /**
+     * @param  \Cartalyst\Sentinel\Sentinel $sentinel
+     * @param  \Cartalyst\Sentinel\Users\UserInterface $user
+     */
+    function it_gets_the_active_user_model($sentinel, $user)
+    {
+        $sentinel->getUser()->shouldBeCalled()->willReturn($user);
+
+        $this->beConstructedWith($sentinel);
+
+        $this->getUserModel()->shouldReturn($user);
+    }
+
+    /**
+     * @param  \Cartalyst\Sentinel\Sentinel $sentinel
+     * @param  \Cartalyst\Sentinel\Users\UserInterface $user
+     * @param  \Cartalyst\Sentinel\Users\UserRepositoryInterface $users
+     */
+    function it_gets_the_user_model_by_id($sentinel, $user, $users)
+    {
+        $users->findByCredentials(Argument::type('array'))->shouldBeCalled()->willReturn($user);
+        $sentinel->getUserRepository()->shouldBeCalled()->willReturn($users);
+
+        $this->beConstructedWith($sentinel);
+
+        $this->getUserModel('john@doe.com')->shouldReturn($user);
+    }
 }

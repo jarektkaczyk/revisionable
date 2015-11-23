@@ -8,4 +8,8 @@ class UserProviderStub implements UserProvider
     {
 
     }
+
+    public function getUserModel($id = null){
+
+    }
 }

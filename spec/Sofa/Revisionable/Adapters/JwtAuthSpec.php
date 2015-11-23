@@ -47,4 +47,34 @@ class JwtAuthSpec extends ObjectBehavior
 
     	$this->getUser()->shouldReturn('john@doe.com');
     }
+
+    /**
+     * @param  \Tymon\JWTAuth\JWTAuth $guard
+     * @param  \Tymon\JWTAuth\Providers\User\EloquentUserAdapter $user
+     */
+    function it_gets_the_active_user_model($guard, $user)
+    {
+        $guard->parseToken()->shouldBeCalled()->willReturn($guard);
+        $guard->toUser()->shouldBeCalled()->willReturn($user);
+
+        $this->beConstructedWith($guard);
+
+        $this->getUserModel();
+    }
+
+    /**
+     * @param  \Tymon\JWTAuth\JWTAuth $guard
+     * @param  \Tymon\JWTAuth\Providers\User\EloquentUserAdapter $user
+     */
+    function it_gets_the_user_model_by_id($guard, $user)
+    {
+        $guard->toUser()->shouldBeCalled()->willReturn($user);
+        $guard->fromUser(Argument::type('object'))->shouldBeCalled()->willReturn($guard);
+
+        $guard->getIdentifier()->shouldBeCalled()->willReturn('id');
+
+        $this->beConstructedWith($guard);
+
+        $this->getUserModel(1);
+    }
 }
