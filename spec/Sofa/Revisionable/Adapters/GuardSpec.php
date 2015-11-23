@@ -25,11 +25,11 @@ class GuardSpec extends ObjectBehavior
     function it_logs_auth_identifier_by_default($guard, $user)
     {
         $guard->user()->shouldBeCalled()->willReturn($user);
-    	$this->beConstructedWith($guard);
+        $this->beConstructedWith($guard);
 
-    	$user->getAuthIdentifier()->shouldBeCalled()->willReturn('default_id');
+        $user->getAuthIdentifier()->shouldBeCalled()->willReturn('default_id');
 
-    	$this->getUser()->shouldReturn('default_id');
+        $this->getUser()->shouldReturn('default_id');
     }
 
     /**
@@ -38,12 +38,12 @@ class GuardSpec extends ObjectBehavior
      */
     function it_logs_custom_field_from_user_object_if_provided($guard, $user)
     {
-    	$user->custom_field = 'john@doe.com';
+        $user->custom_field = 'john@doe.com';
         $guard->user()->shouldBeCalled()->willReturn($user);
 
-    	$this->beConstructedWith($guard, 'custom_field');
+        $this->beConstructedWith($guard, 'custom_field');
 
-    	$this->getUser()->shouldReturn('john@doe.com');
+        $this->getUser()->shouldReturn('john@doe.com');
     }
 
     /**

@@ -1,10 +1,13 @@
-<?php namespace Sofa\Revisionable\Adapters;
+<?php
+
+namespace Sofa\Revisionable\Adapters;
 
 use Sofa\Revisionable\UserProvider;
 use Illuminate\Auth\Guard as BaseGuard;
 
 class Guard implements UserProvider
 {
+
     /**
      * Auth provider instance.
      *
@@ -28,7 +31,7 @@ class Guard implements UserProvider
     public function __construct(BaseGuard $provider, $field = null)
     {
         $this->provider = $provider;
-        $this->field    = $field;
+        $this->field = $field;
     }
 
     /**
@@ -52,6 +55,7 @@ class Guard implements UserProvider
             return ($field = $this->field) ? (string) $user->{$field} : $user->getAuthIdentifier();
         }
     }
+
     /**
      * Return user model
      * @return object|array|null

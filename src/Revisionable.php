@@ -2,6 +2,7 @@
 
 interface Revisionable
 {
+
     /**
      * Boot Revisionable Logger.
      *
@@ -41,7 +42,7 @@ interface Revisionable
     /**
      * Get an array of revisionable attributes.
      *
-     * @param  array  $values
+     * @param  array $values
      * @return array
      */
     public function getRevisionableItems(array $values);

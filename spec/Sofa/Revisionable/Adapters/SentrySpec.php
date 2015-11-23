@@ -13,7 +13,7 @@ class SentrySpec extends ObjectBehavior
      */
     function it_provides_user($sentry)
     {
-    	$this->beConstructedWith($sentry);
+        $this->beConstructedWith($sentry);
 
         $this->shouldImplement('\Sofa\Revisionable\UserProvider');
     }
@@ -25,11 +25,11 @@ class SentrySpec extends ObjectBehavior
     function it_logs_login_field_by_default($sentry, $user)
     {
         $sentry->getUser()->shouldBeCalled()->willReturn($user);
-    	$this->beConstructedWith($sentry);
+        $this->beConstructedWith($sentry);
 
-    	$user->getLogin()->shouldBeCalled()->willReturn('default_login');
+        $user->getLogin()->shouldBeCalled()->willReturn('default_login');
 
-    	$this->getUser()->shouldReturn('default_login');
+        $this->getUser()->shouldReturn('default_login');
     }
 
     /**
@@ -38,12 +38,12 @@ class SentrySpec extends ObjectBehavior
      */
     function it_logs_custom_field_from_user_object_if_provided($sentry, $user)
     {
-    	$user->custom_field = 'john@doe.com';
+        $user->custom_field = 'john@doe.com';
         $sentry->getUser()->shouldBeCalled()->willReturn($user);
 
-    	$this->beConstructedWith($sentry, 'custom_field');
+        $this->beConstructedWith($sentry, 'custom_field');
 
-    	$this->getUser()->shouldReturn('john@doe.com');
+        $this->getUser()->shouldReturn('john@doe.com');
     }
 
     /**

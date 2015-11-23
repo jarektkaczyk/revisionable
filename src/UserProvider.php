@@ -2,6 +2,7 @@
 
 interface UserProvider
 {
+
     /**
      * @return string|null
      */

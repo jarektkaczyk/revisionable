@@ -1,10 +1,13 @@
-<?php namespace Sofa\Revisionable\Adapters;
+<?php
+
+namespace Sofa\Revisionable\Adapters;
 
 use Sofa\Revisionable\UserProvider;
 use Cartalyst\Sentinel\Sentinel as SentinelProvider;
 
 class Sentinel implements UserProvider
 {
+
     /**
      * Auth provider instance.
      *
@@ -28,7 +31,7 @@ class Sentinel implements UserProvider
     public function __construct(SentinelProvider $provider, $field = null)
     {
         $this->provider = $provider;
-        $this->field    = $field;
+        $this->field = $field;
     }
 
     /**
@@ -56,7 +59,12 @@ class Sentinel implements UserProvider
     /**
      * @return object|array|null
      */
-    public function getUserModel($id = null){
-        return ($id) ? $this->provider->getUserRepository()->findByCredentials([$this->field => $id]) : $this->provider->getUser();
+    public function getUserModel($id = null)
+    {
+        return
+            ($id) ?
+                $this->provider->getUserRepository()->findByCredentials([$this->field => $id]) :
+                $this->provider->getUser()
+        ;
     }
 }

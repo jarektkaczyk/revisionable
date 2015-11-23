@@ -8,6 +8,7 @@ use ReflectionClass;
  */
 class ServiceProvider extends BaseProvider
 {
+
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -24,7 +25,7 @@ class ServiceProvider extends BaseProvider
     {
         $this->publishes([
             $this->guessPackagePath() . '/config/config.php' => config_path('sofa_revisionable.php'),
-            $this->guessPackagePath() . '/migrations/' => base_path('/database/migrations'),
+            $this->guessPackagePath() . '/migrations/'       => base_path('/database/migrations'),
         ]);
     }
 
@@ -187,6 +188,6 @@ class ServiceProvider extends BaseProvider
     {
         $path = (new ReflectionClass($this))->getFileName();
 
-        return realpath(dirname($path).'/../');
+        return realpath(dirname($path) . '/../');
     }
 }

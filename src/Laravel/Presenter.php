@@ -6,6 +6,7 @@ use Sofa\Revisionable\Revisionable;
 
 class Presenter
 {
+
     /**
      * Revisionable fields labels.
      *
@@ -76,7 +77,7 @@ class Presenter
      */
     public function __construct(Revision $revision, Model $revisioned)
     {
-        $this->revision   = $revision;
+        $this->revision = $revision;
         $this->revisioned = $revisioned;
     }
 
@@ -147,7 +148,7 @@ class Presenter
     /**
      * Get pass through value using dot notation.
      *
-     * @param  mixed  $target
+     * @param  mixed $target
      * @param  string $key
      * @return mixed
      */
@@ -167,7 +168,7 @@ class Presenter
                 $target = null;
             }
 
-            if (!$target) {
+            if (! $target) {
                 return;
             }
         }
@@ -229,16 +230,16 @@ class Presenter
      */
     protected function getVersion($version)
     {
-        if (!$this->{$version.'Version'}) {
+        if (! $this->{$version . 'Version'}) {
             $revisioned = get_class($this->revisioned);
 
             $revision = new $revisioned;
             $revision->setRawAttributes($this->{$version});
 
-            $this->{$version.'Version'} = $revision;
+            $this->{$version . 'Version'} = $revision;
         }
 
-        return $this->{$version.'Version'};
+        return $this->{$version . 'Version'};
     }
 
     /**
@@ -265,7 +266,7 @@ class Presenter
         }
 
         throw new \InvalidArgumentException(
-            'Presenter::make accepts array, collection or single resource, '.gettype($revision).' given.'
+            'Presenter::make accepts array, collection or single resource, ' . gettype($revision) . ' given.'
         );
     }
 

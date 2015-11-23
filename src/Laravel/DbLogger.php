@@ -6,6 +6,7 @@ use DateTime;
 
 class DbLogger implements Logger
 {
+
     /**
      * Custom database connection.
      *
@@ -36,18 +37,18 @@ class DbLogger implements Logger
     public function __construct(ConnectionInterface $connection, $table)
     {
         $this->defaultConnection = $connection;
-        $this->table             = $table;
+        $this->table = $table;
     }
 
     /**
      * Log data revisions in the db.
      *
-     * @param  string  $action
-     * @param  string  $table
-     * @param  int     $id
-     * @param  array   $old
-     * @param  array   $new
-     * @param  string  $user
+     * @param  string $action
+     * @param  string $table
+     * @param  int $id
+     * @param  array $old
+     * @param  array $new
+     * @param  string $user
      * @return void
      */
     public function revisionLog($action, $table, $id, array $old = [], array $new = [], $user = null)
@@ -89,7 +90,7 @@ class DbLogger implements Logger
     /**
      * Translate provided user to appropriate string.
      *
-     * @param  mixed  $user
+     * @param  mixed $user
      * @return string
      */
     protected function parseUser($user)
@@ -121,7 +122,7 @@ class DbLogger implements Logger
      * Get Server variable.
      *
      * @param  string $key
-     * @param  mixed  $default
+     * @param  mixed $default
      * @return string|array
      */
     protected function getFromServer($key, $default = null)

@@ -12,4 +12,4 @@ before_script:
 
 script:
   - ./vendor/bin/phpspec run -v
-  - ./vendor/bin/phpcs src --standard=psr2
+  - ./vendor/bin/phpcs src --standard=PSR2LaravelMigrations.xml

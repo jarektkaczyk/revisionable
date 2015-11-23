@@ -28,9 +28,9 @@ class JwtAuthSpec extends ObjectBehavior
         $guard->parseToken()->shouldBeCalled()->willReturn($guard);
         $guard->toUser()->shouldBeCalled()->willReturn($user);
 
-    	$guard->getIdentifier()->shouldBeCalled()->willReturn('id');
+        $guard->getIdentifier()->shouldBeCalled()->willReturn('id');
 
-    	$this->getUser()->shouldReturn('id');
+        $this->getUser()->shouldReturn('id');
     }
 
     /**
@@ -39,13 +39,13 @@ class JwtAuthSpec extends ObjectBehavior
      */
     function it_logs_custom_field_from_user_object_if_provided($guard, $user)
     {
-    	$user->custom_field = 'john@doe.com';
+        $user->custom_field = 'john@doe.com';
         $guard->parseToken()->shouldBeCalled()->willReturn($guard);
         $guard->toUser()->shouldBeCalled()->willReturn($user);
 
-    	$this->beConstructedWith($guard, 'custom_field');
+        $this->beConstructedWith($guard, 'custom_field');
 
-    	$this->getUser()->shouldReturn('john@doe.com');
+        $this->getUser()->shouldReturn('john@doe.com');
     }
 
     /**
