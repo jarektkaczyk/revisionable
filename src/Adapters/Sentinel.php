@@ -49,7 +49,7 @@ class Sentinel implements UserProvider
     protected function getUserFieldValue()
     {
         if ($user = $this->provider->getUser()) {
-            return ($field = $this->field) ? (string) $user->{$field} : $user->getLogin();
+            return ($field = $this->field) ? (string) $user->{$field} : $user->getUserLogin();
         }
     }
 }

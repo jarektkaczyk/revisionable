@@ -27,7 +27,7 @@ class SentinelSpec extends ObjectBehavior
         $sentinel->getUser()->shouldBeCalled()->willReturn($user);
     	$this->beConstructedWith($sentinel);
 
-    	$user->getLogin()->shouldBeCalled()->willReturn('default_login');
+    	$user->getUserLogin()->shouldBeCalled()->willReturn('default_login');
 
     	$this->getUser()->shouldReturn('default_login');
     }
