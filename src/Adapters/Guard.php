@@ -1,14 +1,14 @@
 <?php namespace Sofa\Revisionable\Adapters;
 
 use Sofa\Revisionable\UserProvider;
-use Illuminate\Auth\Guard as BaseGuard;
+use Illuminate\Contracts\Auth\Guard as BaseGuard;
 
 class Guard implements UserProvider
 {
     /**
      * Auth provider instance.
      *
-     * @var \Illuminate\Auth\Guard
+     * @var \Illuminate\Contracts\Auth\Guard
      */
     protected $provider;
     
@@ -22,7 +22,7 @@ class Guard implements UserProvider
     /**
      * Create adapter instance for Illuminate Guard.
      *
-     * @param \Illuminate\Auth\Guard $provider
+     * @param \Illuminate\Contracts\Auth\Guard $provider
      * @param string $field
      */
     public function __construct(BaseGuard $provider, $field = null)
