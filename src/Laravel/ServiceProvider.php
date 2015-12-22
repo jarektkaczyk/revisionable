@@ -53,7 +53,7 @@ class ServiceProvider extends BaseProvider
     {
         $table = $this->app['config']->get('sofa_revisionable.table', 'revisions');
 
-        $this->app->bindShared('revisionable.logger', function ($app) use ($table) {
+        $this->app->singleton('revisionable.logger', function ($app) use ($table) {
             return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection(), $table);
         });
     }
@@ -92,7 +92,7 @@ class ServiceProvider extends BaseProvider
      */
     protected function bindSentryProvider()
     {
-        $this->app->bindShared('revisionable.userprovider', function ($app) {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
             return new \Sofa\Revisionable\Adapters\Sentry($app['sentry'], $field);
@@ -106,7 +106,7 @@ class ServiceProvider extends BaseProvider
      */
     protected function bindSentinelProvider()
     {
-        $this->app->bindShared('revisionable.userprovider', function ($app) {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
             return new \Sofa\Revisionable\Adapters\Sentinel($app['sentinel'], $field);
@@ -120,7 +120,7 @@ class ServiceProvider extends BaseProvider
      */
     private function bindJwtAuthProvider()
     {
-        $this->app->bindShared('revisionable.userprovider', function ($app) {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
             return new \Sofa\Revisionable\Adapters\JwtAuth($app['tymon.jwt.auth'], $field);
@@ -134,7 +134,7 @@ class ServiceProvider extends BaseProvider
      */
     protected function bindGuardProvider()
     {
-        $this->app->bindShared('revisionable.userprovider', function ($app) {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
             return new \Sofa\Revisionable\Adapters\Guard($app['auth']->driver(), $field);
