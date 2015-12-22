@@ -137,7 +137,7 @@ class ServiceProvider extends BaseProvider
         $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
-            return new \Sofa\Revisionable\Adapters\Guard($app['auth']->driver(), $field);
+            return new \Sofa\Revisionable\Adapters\Guard($app['auth.driver'], $field);
         });
     }
 
