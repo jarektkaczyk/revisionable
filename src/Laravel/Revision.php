@@ -5,6 +5,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class Revision extends Model
 {
+
     /**
      * The database table used by the model.
      *
@@ -116,14 +117,23 @@ class Revision extends Model
     /**
      * Set custom table name for the model.
      *
-     * @param  string  $table
+     * @param  string $table
      * @return void
      */
     public static function setCustomTable($table)
     {
-        if (!isset(static::$customTable)) {
+        if (! isset(static::$customTable)) {
             static::$customTable = $table;
         }
+    }
+
+    /**
+     * Get user model from user provider
+     * @return mixed
+     */
+    public function getUserModel()
+    {
+        return app('revisionable.userprovider')->getUserModel($this->user);
     }
 
     /**

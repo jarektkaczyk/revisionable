@@ -13,7 +13,7 @@ class SentinelSpec extends ObjectBehavior
      */
     function it_provides_user($sentinel)
     {
-    	$this->beConstructedWith($sentinel);
+        $this->beConstructedWith($sentinel);
 
         $this->shouldImplement('\Sofa\Revisionable\UserProvider');
     }
@@ -25,11 +25,11 @@ class SentinelSpec extends ObjectBehavior
     function it_logs_login_field_by_default($sentinel, $user)
     {
         $sentinel->getUser()->shouldBeCalled()->willReturn($user);
-    	$this->beConstructedWith($sentinel);
+        $this->beConstructedWith($sentinel);
 
-    	$user->getLogin()->shouldBeCalled()->willReturn('default_login');
+        $user->getUserLogin()->shouldBeCalled()->willReturn('default_login');
 
-    	$this->getUser()->shouldReturn('default_login');
+        $this->getUser()->shouldReturn('default_login');
     }
 
     /**
@@ -38,11 +38,39 @@ class SentinelSpec extends ObjectBehavior
      */
     function it_logs_custom_field_from_user_object_if_provided($sentinel, $user)
     {
-    	$user->custom_field = 'john@doe.com';
+        $user->custom_field = 'john@doe.com';
         $sentinel->getUser()->shouldBeCalled()->willReturn($user);
 
-    	$this->beConstructedWith($sentinel, 'custom_field');
+        $this->beConstructedWith($sentinel, 'custom_field');
 
-    	$this->getUser()->shouldReturn('john@doe.com');
+        $this->getUser()->shouldReturn('john@doe.com');
+    }
+
+    /**
+     * @param  \Cartalyst\Sentinel\Sentinel $sentinel
+     * @param  \Cartalyst\Sentinel\Users\UserInterface $user
+     */
+    function it_gets_the_active_user_model($sentinel, $user)
+    {
+        $sentinel->getUser()->shouldBeCalled()->willReturn($user);
+
+        $this->beConstructedWith($sentinel);
+
+        $this->getUserModel()->shouldReturn($user);
+    }
+
+    /**
+     * @param  \Cartalyst\Sentinel\Sentinel $sentinel
+     * @param  \Cartalyst\Sentinel\Users\UserInterface $user
+     * @param  \Cartalyst\Sentinel\Users\UserRepositoryInterface $users
+     */
+    function it_gets_the_user_model_by_id($sentinel, $user, $users)
+    {
+        $users->findByCredentials(Argument::type('array'))->shouldBeCalled()->willReturn($user);
+        $sentinel->getUserRepository()->shouldBeCalled()->willReturn($users);
+
+        $this->beConstructedWith($sentinel);
+
+        $this->getUserModel('john@doe.com')->shouldReturn($user);
     }
 }

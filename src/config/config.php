@@ -16,8 +16,6 @@ return [
     |  - jwt-auth
     */
     'userprovider' => 'illuminate',
-
-
     /*
     |--------------------------------------------------------------------------
     | User field to be saved as the author of tracked action.
@@ -29,8 +27,6 @@ return [
     |  - login field (email) for sentry/sentinel
     */
     'userfield'    => null,
-
-
     /*
     |--------------------------------------------------------------------------
     | Table used for the revisions.

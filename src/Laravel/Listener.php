@@ -6,6 +6,7 @@ use Sofa\Revisionable\Revisionable;
 
 class Listener implements ListenerInterface
 {
+
     /**
      * User provider instance.
      *
@@ -88,15 +89,15 @@ class Listener implements ListenerInterface
      */
     protected function log($action, Revisionable $revisioned)
     {
-        if (!$revisioned->isRevisioned()) {
+        if (! $revisioned->isRevisioned()) {
             return;
         }
 
         $table = $revisioned->getTable();
-        $id    = $revisioned->getKey();
-        $user  = $this->getCurrentUser();
-        $old   = [];
-        $new   = [];
+        $id = $revisioned->getKey();
+        $user = $this->getCurrentUser();
+        $old = [];
+        $new = [];
 
         switch ($action) {
             case 'created':

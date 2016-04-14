@@ -1,24 +1,27 @@
-<?php namespace Sofa\Revisionable\Adapters;
+<?php
+
+namespace Sofa\Revisionable\Adapters;
 
 use Sofa\Revisionable\UserProvider;
 use Illuminate\Auth\Guard as BaseGuard;
 
 class Guard implements UserProvider
 {
+
     /**
      * Auth provider instance.
      *
      * @var \Illuminate\Auth\Guard
      */
     protected $provider;
-    
+
     /**
      * Field from the user to be saved as author of the action.
      *
      * @var string
      */
     protected $field;
-    
+
     /**
      * Create adapter instance for Illuminate Guard.
      *
@@ -28,7 +31,7 @@ class Guard implements UserProvider
     public function __construct(BaseGuard $provider, $field = null)
     {
         $this->provider = $provider;
-        $this->field    = $field;
+        $this->field = $field;
     }
 
     /**
@@ -51,5 +54,14 @@ class Guard implements UserProvider
         if ($user = $this->provider->user()) {
             return ($field = $this->field) ? (string) $user->{$field} : $user->getAuthIdentifier();
         }
+    }
+
+    /**
+     * Return user model
+     * @return object|array|null
+     */
+    public function getUserModel($id = null)
+    {
+        return ($id) ? $this->provider->getProvider()->retrieveById($id) : $this->provider->user();
     }
 }

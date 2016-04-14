@@ -1,24 +1,27 @@
-<?php namespace Sofa\Revisionable\Adapters;
+<?php
+
+namespace Sofa\Revisionable\Adapters;
 
 use Sofa\Revisionable\UserProvider;
 use Cartalyst\Sentry\Sentry as SentryProvider;
 
 class Sentry implements UserProvider
 {
+
     /**
      * Auth provider instance.
      *
      * @var \Cartalyst\Sentry\Sentry
      */
     protected $provider;
-    
+
     /**
      * Field from the user to be saved as author of the action.
      *
      * @var string
      */
     protected $field;
-    
+
     /**
      * Create adapter instance for Sentry.
      *
@@ -28,7 +31,7 @@ class Sentry implements UserProvider
     public function __construct(SentryProvider $provider, $field = null)
     {
         $this->provider = $provider;
-        $this->field    = $field;
+        $this->field = $field;
     }
 
     /**
@@ -51,5 +54,17 @@ class Sentry implements UserProvider
         if ($user = $this->provider->getUser()) {
             return ($field = $this->field) ? (string) $user->{$field} : $user->getLogin();
         }
+    }
+
+    /**
+     * @return object|array|null
+     */
+    public function getUserModel($id = null)
+    {
+        return
+            ($id) ?
+                $this->provider->getUserProvider()->findByCredentials([$this->field => $id]) :
+                $this->provider->getUser()
+        ;
     }
 }

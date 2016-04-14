@@ -25,11 +25,11 @@ class GuardSpec extends ObjectBehavior
     function it_logs_auth_identifier_by_default($guard, $user)
     {
         $guard->user()->shouldBeCalled()->willReturn($user);
-    	$this->beConstructedWith($guard);
+        $this->beConstructedWith($guard);
 
-    	$user->getAuthIdentifier()->shouldBeCalled()->willReturn('default_id');
+        $user->getAuthIdentifier()->shouldBeCalled()->willReturn('default_id');
 
-    	$this->getUser()->shouldReturn('default_id');
+        $this->getUser()->shouldReturn('default_id');
     }
 
     /**
@@ -38,11 +38,39 @@ class GuardSpec extends ObjectBehavior
      */
     function it_logs_custom_field_from_user_object_if_provided($guard, $user)
     {
-    	$user->custom_field = 'john@doe.com';
+        $user->custom_field = 'john@doe.com';
         $guard->user()->shouldBeCalled()->willReturn($user);
 
-    	$this->beConstructedWith($guard, 'custom_field');
+        $this->beConstructedWith($guard, 'custom_field');
 
-    	$this->getUser()->shouldReturn('john@doe.com');
+        $this->getUser()->shouldReturn('john@doe.com');
+    }
+
+    /**
+     * @param  \Illuminate\Auth\Guard $guard
+     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
+     */
+    function it_gets_the_active_user_model($guard, $user)
+    {
+        $guard->user()->shouldBeCalled()->willReturn($user);
+
+        $this->beConstructedWith($guard);
+
+        $this->getUserModel()->shouldReturn($user);
+    }
+
+    /**
+     * @param  \Illuminate\Auth\Guard $guard
+     * @param  \Illuminate\Contracts\Auth\Authenticatable $user
+     * @param  \Illuminate\Contracts\Auth\UserProvider $provider
+     */
+    function it_gets_the_user_model_by_id($guard, $user, $provider)
+    {
+        $provider->retrieveById(1)->shouldBeCalled()->willReturn($user);
+        $guard->getProvider()->shouldBeCalled()->willReturn($provider);
+
+        $this->beConstructedWith($guard);
+
+        $this->getUserModel(1)->shouldReturn($user);
     }
 }

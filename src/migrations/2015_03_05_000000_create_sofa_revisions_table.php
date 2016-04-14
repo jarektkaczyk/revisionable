@@ -5,6 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 class CreateSofaRevisionsTable extends Migration
 {
+
     /**
      * Revisions table.
      *

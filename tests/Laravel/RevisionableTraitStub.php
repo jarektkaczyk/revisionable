@@ -23,22 +23,22 @@ class RevisionableTraitStub implements Revisionable
         return static::getEvents();
     }
 
-    public function registerCreatedListener()
+    public static function registerCreatedListener()
     {
         return static::registerCreated();
     }
 
-    public function registerUpdatedListener()
+    public static function registerUpdatedListener()
     {
         return static::registerUpdated();
     }
 
-    public function registerDeletedListener()
+    public static function registerDeletedListener()
     {
         return static::registerDeleted();
     }
 
-    public function registerRestoredListener()
+    public static function registerRestoredListener()
     {
         return static::registerRestored();
     }

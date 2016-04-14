@@ -1,5 +1,6 @@
-<?php namespace Sofa\Revisionable\Adapters;
+<?php
 
+namespace Sofa\Revisionable\Adapters;
 
 use Sofa\Revisionable\UserProvider;
 use Tymon\JWTAuth\JWTAuth as JWT;
@@ -51,7 +52,19 @@ class JwtAuth implements UserProvider
     protected function getUserFieldValue()
     {
         if ($user = $this->provider->parseToken()->toUser()) {
-            return ($field = $this->field) ? (string)$user->{$field} : $this->provider->getIdentifier();
+            return ($field = $this->field) ? (string) $user->{$field} : $this->provider->getIdentifier();
+        }
+    }
+
+    /**
+     * @return object|array|null
+     */
+    public function getUserModel($id = null)
+    {
+        if ($id) {
+            return $this->provider->fromUser((object) [$this->provider->getIdentifier() => $id])->toUser();
+        } else {
+            return $this->provider->parseToken()->toUser();
         }
     }
 }

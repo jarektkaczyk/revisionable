@@ -23,6 +23,7 @@ use DateTime;
  */
 trait RevisionableTrait
 {
+
     /**
      * Revisionable Logger instance.
      *
@@ -57,7 +58,8 @@ trait RevisionableTrait
     public static function registerListeners()
     {
         foreach (static::getRevisionableEvents() as $event) {
-            static::{"register{$event}Listener"}();
+            static::{
+                "register{$event}Listener"}();
         }
     }
 
@@ -110,7 +112,7 @@ trait RevisionableTrait
      */
     public static function bootLogger()
     {
-        if (!static::$revisionableLogger) {
+        if (! static::$revisionableLogger) {
             static::setRevisionableLogger(App::make('revisionable.logger'));
         }
     }
@@ -188,7 +190,7 @@ trait RevisionableTrait
     /**
      * Stringify revisionable attributes.
      *
-     * @param  array  $attributes
+     * @param  array $attributes
      * @return array
      */
     protected function prepareAttributes(array $attributes)
@@ -203,7 +205,7 @@ trait RevisionableTrait
     /**
      * Get an array of revisionable attributes.
      *
-     * @param  array  $values
+     * @param  array $values
      * @return array
      */
     public function getRevisionableItems(array $values)
@@ -354,9 +356,9 @@ trait RevisionableTrait
         $presenter = $this->getRevisionPresenter();
 
         return (is_subclass_of($presenter, $this->getDefaultRevisionPresenter())
-                || $presenter == $this->getDefaultRevisionPresenter())
-                    ? $presenter::make($revision, $this)
-                    : $revision;
+            || $presenter == $this->getDefaultRevisionPresenter())
+            ? $presenter::make($revision, $this)
+            : $revision;
     }
 
     /**
@@ -368,7 +370,7 @@ trait RevisionableTrait
      */
     protected function loadRelationIfNecessary($relation)
     {
-        if (!array_key_exists($relation, $this->relations)) {
+        if (! array_key_exists($relation, $this->relations)) {
             $this->load($relation);
         }
     }
@@ -393,7 +395,7 @@ trait RevisionableTrait
      */
     public function getRevisionsCountAttribute()
     {
-        if (!array_key_exists('revisionsCount', $this->relations)) {
+        if (! array_key_exists('revisionsCount', $this->relations)) {
             $this->load('revisionsCount');
         }
 
@@ -491,7 +493,7 @@ trait RevisionableTrait
      */
     public function getRevisionPresenter()
     {
-        if (!isset($this->revisionPresenter)) {
+        if (! isset($this->revisionPresenter)) {
             return null;
         }
 
