@@ -20,6 +20,9 @@ Nice and easy way to handle revisions of your db.
 ```
     "require": {
         ...
+        "sofa/revisionable": "~5.2",
+        
+        // for L5.1 use:
         "sofa/revisionable": "~1.0@dev",
         ...
     },
