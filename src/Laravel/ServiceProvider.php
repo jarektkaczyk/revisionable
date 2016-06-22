@@ -52,9 +52,10 @@ class ServiceProvider extends BaseProvider
     protected function bindLogger()
     {
         $table = $this->app['config']->get('sofa_revisionable.table', 'revisions');
+        $connection = $this->app['config']->get('sofa_revisionable.db_connection') ?: null;
 
-        $this->app->singleton('revisionable.logger', function ($app) use ($table) {
-            return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection(), $table);
+        $this->app->singleton('revisionable.logger', function ($app) use ($table, $connection) {
+            return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection($connection), $table);
         });
     }
 
