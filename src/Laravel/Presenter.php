@@ -2,7 +2,6 @@
 
 namespace Sofa\Revisionable\Laravel;
 
-use Sofa\Revisionable\Revisionable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -43,9 +42,9 @@ class Presenter
      * @var array
      */
     protected $actions = [
-        'created'  => 'created',
-        'updated'  => 'updated',
-        'deleted'  => 'deleted',
+        'created' => 'created',
+        'updated' => 'updated',
+        'deleted' => 'deleted',
         'restored' => 'restored',
     ];
 
@@ -73,12 +72,12 @@ class Presenter
     /**
      * Create a new revision presenter.
      *
-     * @param \Sofa\Revisionable\Revision $revision
+     * @param \Sofa\Revisionable\Revision        $revision
      * @param \Illuminat\Database\Eloquent\Model $revisioned
      */
     public function __construct(Revision $revision, Model $revisioned)
     {
-        $this->revision   = $revision;
+        $this->revision = $revision;
         $this->revisioned = $revisioned;
     }
 
@@ -97,7 +96,8 @@ class Presenter
     /**
      * Get custom label for revisioned field.
      *
-     * @param  string $key
+     * @param string $key
+     *
      * @return string
      */
     public function label($key)
@@ -108,8 +108,9 @@ class Presenter
     /**
      * Get value from the revision.
      *
-     * @param  string $version
-     * @param  string $key
+     * @param string $version
+     * @param string $key
+     *
      * @return mixed
      */
     public function getFromRevision($version, $key)
@@ -122,8 +123,9 @@ class Presenter
     /**
      * Determine whether the value should be fetched from the relation.
      *
-     * @param  string $key
-     * @return boolean
+     * @param string $key
+     *
+     * @return bool
      */
     protected function isPassedThrough($key)
     {
@@ -133,8 +135,9 @@ class Presenter
     /**
      * Get value from the relation.
      *
-     * @param  string $version
-     * @param  string $key
+     * @param string $version
+     * @param string $key
+     *
      * @return mixed
      */
     protected function passThrough($version, $key)
@@ -149,22 +152,20 @@ class Presenter
     /**
      * Get pass through value using dot notation.
      *
-     * @param  mixed  $target
-     * @param  string $key
+     * @param mixed  $target
+     * @param string $key
+     *
      * @return mixed
      */
     protected function dataGet($target, $key)
     {
         foreach (explode('.', $key) as $segment) {
-            if ($target instanceof Revisionable) {
+            if (is_object($target) && in_array(Revisionable::class, class_uses_recursive($target))) {
                 $target = $this->passThroughRevisionable($target, $segment);
-
-            } elseif ($target instanceof Presenter || $target instanceof Revision) {
+            } elseif ($target instanceof self || $target instanceof Revision) {
                 $target = $this->passThroughRevision($target, $segment);
-
             } elseif ($target instanceof Model) {
                 $target = $this->passThroughModel($target, $segment);
-
             } else {
                 $target = null;
             }
@@ -177,7 +178,7 @@ class Presenter
         return $target;
     }
 
-    protected function passThroughRevisionable(Revisionable $revisionable, $key)
+    protected function passThroughRevisionable($revisionable, $key)
     {
         // Determine whether the model existed at the time of revision.
         if ($revisionable->created_at > $this->created_at) {
@@ -188,7 +189,7 @@ class Presenter
 
         // If we are working with related revisionable model then
         // return its version at the time of current revision.
-        if ($target instanceof Revisionable) {
+        if (is_object($target) && in_array(Revisionable::class, class_uses_recursive($target))) {
             return ($target->snapshot($this->created_at)) ?: $target;
         }
 
@@ -198,8 +199,9 @@ class Presenter
     /**
      * Get pass through value from another revision.
      *
-     * @param  \Sofa\Revisionable\Revision|\Sofa\Revisionable\Laravel\Presenter $revision
-     * @param  string $key
+     * @param \Sofa\Revisionable\Revision|\Sofa\Revisionable\Laravel\Presenter $revision
+     * @param string                                                           $key
+     *
      * @return mixed
      */
     protected function passThroughRevision($revision, $key)
@@ -215,8 +217,9 @@ class Presenter
     /**
      * Get pass through value from the Eloquent model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $model
-     * @param  string $key
+     * @param \Illuminate\Database\Eloquent\Model $model
+     * @param string                              $key
+     *
      * @return mixed
      */
     protected function passThroughModel(Model $model, $key)
@@ -234,7 +237,7 @@ class Presenter
         if (!$this->{$version.'Version'}) {
             $revisioned = get_class($this->revisioned);
 
-            $revision = new $revisioned;
+            $revision = new $revisioned();
             $revision->setRawAttributes($this->{$version});
 
             $this->{$version.'Version'} = $revision;
@@ -246,8 +249,9 @@ class Presenter
     /**
      * Decorate revision model or array/collection of models.
      *
-     * @param  mixed $revision
-     * @param  \Illuminate\Database\Eloquent\Model $revisioned
+     * @param mixed                               $revision
+     * @param \Illuminate\Database\Eloquent\Model $revisioned
+     *
      * @return mixed
      *
      * @throws \InvalidArgumentException
@@ -262,7 +266,7 @@ class Presenter
             return static::makeCollection($revision, $revisioned);
         }
 
-        if (! $revision || $revision instanceof Model) {
+        if (!$revision || $revision instanceof Model) {
             return static::makeOne($revision, $revisioned);
         }
 
@@ -274,8 +278,9 @@ class Presenter
     /**
      * Decorate Eloquent model.
      *
-     * @param  \Illuminate\Database\Eloquent\Model|null $revision
-     * @param  \Illuminate\Database\Eloquent\Model $revisioned
+     * @param \Illuminate\Database\Eloquent\Model|null $revision
+     * @param \Illuminate\Database\Eloquent\Model      $revisioned
+     *
      * @return static
      */
     public static function makeOne(Model $revision, Model $revisioned)
@@ -286,8 +291,9 @@ class Presenter
     /**
      * Decorate array of Eloquent models.
      *
-     * @param  array $revisions
-     * @param  \Illuminate\Database\Eloquent\Model $revisioned
+     * @param array                               $revisions
+     * @param \Illuminate\Database\Eloquent\Model $revisioned
+     *
      * @return array
      */
     public static function makeArray(array $revisions, Model $revisioned)
@@ -298,8 +304,9 @@ class Presenter
     /**
      * Decorate collection of models.
      *
-     * @param  \Illuminate\Database\Eloquent\Collection $revisions
-     * @param  \Illuminate\Database\Eloquent\Model $revisioned
+     * @param \Illuminate\Database\Eloquent\Collection $revisions
+     * @param \Illuminate\Database\Eloquent\Model      $revisioned
+     *
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public static function makeCollection(Collection $revisions, Model $revisioned)
@@ -327,8 +334,9 @@ class Presenter
     /**
      * Handle dynamic methods calls.
      *
-     * @param  string $method
-     * @param  array $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)
@@ -345,7 +353,8 @@ class Presenter
     /**
      * Pass dynamic property calls on to underlying revision model.
      *
-     * @param  string $property
+     * @param string $property
+     *
      * @return mixed
      */
     public function __get($property)

@@ -12,9 +12,17 @@ class CreateSofaRevisionsTable extends Migration
      */
     protected $table;
 
+    /**
+     * Revisions db connection.
+     *
+     * @var string
+     */
+    protected $connection;
+
     public function __construct()
     {
         $this->table = Config::get('sofa_revisionable.table', 'revisions');
+        $this->connection = Config::get('sofa_revisionable.connection');
     }
 
     /**
@@ -24,7 +32,7 @@ class CreateSofaRevisionsTable extends Migration
      */
     public function up()
     {
-        Schema::create($this->table, function (Blueprint $table) {
+        Schema::connection($this->connection)->create($this->table, function (Blueprint $table) {
             $table->increments('id');
             $table->string('action', 255);
             $table->string('table_name', 255);
@@ -49,6 +57,6 @@ class CreateSofaRevisionsTable extends Migration
      */
     public function down()
     {
-        Schema::drop($this->table);
+        Schema::connection($this->connection)->drop($this->table);
     }
 }

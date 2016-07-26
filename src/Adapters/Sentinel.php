@@ -1,4 +1,6 @@
-<?php namespace Sofa\Revisionable\Adapters;
+<?php
+
+namespace Sofa\Revisionable\Adapters;
 
 use Sofa\Revisionable\UserProvider;
 use Cartalyst\Sentinel\Sentinel as SentinelProvider;
@@ -23,12 +25,12 @@ class Sentinel implements UserProvider
      * Create adapter instance for Sentinel.
      *
      * @param SentinelProvider $provider
-     * @param string $field
+     * @param string           $field
      */
     public function __construct(SentinelProvider $provider, $field = null)
     {
         $this->provider = $provider;
-        $this->field    = $field;
+        $this->field = $field;
     }
 
     /**

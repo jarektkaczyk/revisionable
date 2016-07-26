@@ -33,24 +33,23 @@ class DbLogger implements Logger
      * Create a new DbLogger.
      *
      * @param \Illuminate\Database\ConnectionInterface $connection
-     * @param string $table
+     * @param string                                   $table
      */
     public function __construct(ConnectionInterface $connection, $table)
     {
         $this->defaultConnection = $connection;
-        $this->table             = $table;
+        $this->table = $table;
     }
 
     /**
      * Log data revisions in the db.
      *
-     * @param  string  $action
-     * @param  string  $table
-     * @param  int     $id
-     * @param  array   $old
-     * @param  array   $new
-     * @param  string  $user
-     * @return void
+     * @param string $action
+     * @param string $table
+     * @param int    $id
+     * @param array  $old
+     * @param array  $new
+     * @param string $user
      */
     public function revisionLog($action, $table, $id, array $old = [], array $new = [], $user = null)
     {
@@ -61,15 +60,15 @@ class DbLogger implements Logger
         $format = $connection->getQueryGrammar()->getDateFormat();
 
         $connection->table($this->table)->insert([
-            'action'       => substr($action, 0, 255),
-            'table_name'   => substr($table, 0, 255),
-            'row_id'       => substr($id, 0, 255),
-            'old'          => json_encode($old),
-            'new'          => json_encode($new),
-            'user'         => substr($user, 0, 255),
-            'ip'           => substr($this->getFromServer('REMOTE_ADDR'), 0, 255) ?: null,
+            'action' => substr($action, 0, 255),
+            'table_name' => substr($table, 0, 255),
+            'row_id' => substr($id, 0, 255),
+            'old' => json_encode($old),
+            'new' => json_encode($new),
+            'user' => substr($user, 0, 255),
+            'ip' => substr($this->getFromServer('REMOTE_ADDR'), 0, 255) ?: null,
             'ip_forwarded' => substr($this->getFromServer('HTTP_X_FORWARDED_FOR'), 0, 255) ?: null,
-            'created_at'   => (new DateTime)->format($format),
+            'created_at' => (new DateTime())->format($format),
         ]);
 
         $this->resetConnection();
@@ -78,7 +77,8 @@ class DbLogger implements Logger
     /**
      * Set custom connection for the next log.
      *
-     * @param  \Illuminate\Database\ConnectionInterface $connection
+     * @param \Illuminate\Database\ConnectionInterface $connection
+     *
      * @return static
      */
     public function on(ConnectionInterface $connection)
@@ -91,7 +91,8 @@ class DbLogger implements Logger
     /**
      * Translate provided user to appropriate string.
      *
-     * @param  mixed  $user
+     * @param mixed $user
+     *
      * @return string
      */
     protected function parseUser($user)
@@ -111,8 +112,6 @@ class DbLogger implements Logger
 
     /**
      * Reset custom connection.
-     *
-     * @return void
      */
     protected function resetConnection()
     {
@@ -122,8 +121,9 @@ class DbLogger implements Logger
     /**
      * Get Server variable.
      *
-     * @param  string $key
-     * @param  mixed  $default
+     * @param string $key
+     * @param mixed  $default
+     *
      * @return string|array
      */
     protected function getFromServer($key, $default = null)

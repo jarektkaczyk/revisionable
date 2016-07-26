@@ -20,7 +20,7 @@ Nice and easy way to handle revisions of your db.
 ```
     "require": {
         ...
-        "sofa/revisionable": "~1.0@dev",
+        "sofa/revisionable": "~2.0",
         ...
     },
 
@@ -52,6 +52,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | User model (for executor relation on Revision model).
+    |--------------------------------------------------------------------------
+    |
+    | By default App\User.
+    */
+    'usermodel' => 'App\User',
+
+    /*
+    |--------------------------------------------------------------------------
     | User provider (auth) implementation.
     |--------------------------------------------------------------------------
     |
@@ -75,9 +84,8 @@ return [
     |
     |  - id for illuminate
     |  - login field (email) for sentry/sentinel
-    |  - id or ANY field in User model for tymon/jwt-auth
     */
-    'userfield'    => null,
+    'userfield' => 'id',
 
 
     /*
@@ -85,7 +93,15 @@ return [
     | Table used for the revisions.
     |--------------------------------------------------------------------------
     */
-    'table'        => 'revisions',
+    'table' => 'revisions',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Database connection used for the revisions.
+    |--------------------------------------------------------------------------
+    */
+    'connection' => null,
 
 ];
 ```
@@ -94,13 +110,14 @@ return [
 ### 4. Run the migration in order to create the revisions table:
 
 ```
+~$ php artisan revisions:table
 ~$ php artisan migrate [--database=custom_connection]
 ```
 
 You can provide additional `--database` param if you want the migration to be run using non-default db connection.
 
 
-### 5. Add revisionable trait and contract to the models you wish to keep track of:
+### 5. Add revisionable trait to the models you wish to keep track of:
 
 ```php
 <?php namespace App;

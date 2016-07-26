@@ -4,9 +4,8 @@ namespace Sofa\Revisionable\Laravel;
 
 use Sofa\Revisionable\Logger;
 use Sofa\Revisionable\UserProvider;
-use Sofa\Revisionable\Laravel\Revisionable;
 
-class Listener implements \Sofa\Revisionable\Listener
+class Listener
 {
     /** @var \Sofa\Revisionable\UserProvider */
     protected $userProvider;
@@ -16,7 +15,7 @@ class Listener implements \Sofa\Revisionable\Listener
 
     /**
      * @param \Sofa\Revisionable\UserProvider $userProvider
-     * @param \Sofa\Revisionable\Logger $logger
+     * @param \Sofa\Revisionable\Logger       $logger
      */
     public function __construct(UserProvider $userProvider, Logger $logger)
     {
@@ -27,8 +26,7 @@ class Listener implements \Sofa\Revisionable\Listener
     /**
      * Handle created event.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $revisioned
-     * @return void
+     * @param \Illuminate\Database\Eloquent\Model $revisioned
      */
     public function created($revisioned)
     {
@@ -38,8 +36,7 @@ class Listener implements \Sofa\Revisionable\Listener
     /**
      * Handle updated event.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $revisioned
-     * @return void
+     * @param \Illuminate\Database\Eloquent\Model $revisioned
      */
     public function updated($revisioned)
     {
@@ -51,8 +48,7 @@ class Listener implements \Sofa\Revisionable\Listener
     /**
      * Handle deleted event.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $revisioned
-     * @return void
+     * @param \Illuminate\Database\Eloquent\Model $revisioned
      */
     public function deleted($revisioned)
     {
@@ -62,8 +58,7 @@ class Listener implements \Sofa\Revisionable\Listener
     /**
      * Handle restored event.
      *
-     * @param  \Illuminate\Database\Eloquent\Model $revisioned
-     * @return void
+     * @param \Illuminate\Database\Eloquent\Model $revisioned
      */
     public function restored($revisioned)
     {
@@ -73,9 +68,8 @@ class Listener implements \Sofa\Revisionable\Listener
     /**
      * Log the revision.
      *
-     * @param  string $action
+     * @param string $action
      * @param  \Illuminate\Database\Eloquent\Model
-     * @return void
      */
     protected function log($action, $revisioned)
     {
@@ -87,8 +81,8 @@ class Listener implements \Sofa\Revisionable\Listener
         }
 
         $table = $revisioned->getTable();
-        $id    = $revisioned->getKey();
-        $user  = $this->userProvider->getUser();
+        $id = $revisioned->getKey();
+        $user = $this->userProvider->getUser();
         $old = $new = [];
 
         switch ($action) {

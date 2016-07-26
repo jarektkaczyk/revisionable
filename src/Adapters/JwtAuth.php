@@ -1,12 +1,12 @@
-<?php namespace Sofa\Revisionable\Adapters;
+<?php
 
+namespace Sofa\Revisionable\Adapters;
 
-use Sofa\Revisionable\UserProvider;
 use Tymon\JWTAuth\JWTAuth as JWT;
+use Sofa\Revisionable\UserProvider;
 
 class JwtAuth implements UserProvider
 {
-
     /**
      * Auth provider instance.
      *
@@ -25,7 +25,7 @@ class JwtAuth implements UserProvider
      * Create adapter instance for Illuminate Guard.
      *
      * @param \Tymon\JWTAuth\JWTAuth $provider
-     * @param string $field
+     * @param string                 $field
      */
     public function __construct(JWT $provider, $field = null)
     {
@@ -51,7 +51,7 @@ class JwtAuth implements UserProvider
     protected function getUserFieldValue()
     {
         if ($user = $this->provider->parseToken()->toUser()) {
-            return ($field = $this->field) ? (string)$user->{$field} : $this->provider->getIdentifier();
+            return ($field = $this->field) ? (string) $user->{$field} : $this->provider->getIdentifier();
         }
     }
 }

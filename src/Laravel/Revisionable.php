@@ -8,8 +8,6 @@ trait Revisionable
 {
     /**
      * Boot the trait for a model.
-     *
-     * @return void
      */
     protected static function bootRevisionable()
     {
@@ -19,7 +17,8 @@ trait Revisionable
     /**
      * Get record version at given timestamp.
      *
-     * @param  \DateTime|string $timestamp  DateTime|Carbon object or parsable date string @see strtotime()
+     * @param \DateTime|string $timestamp DateTime|Carbon object or parsable date string @see strtotime()
+     *
      * @return \Sofa\Revisionable\Laravel\Revision|\Sofa\Revisionable\laravel\Presenter|null
      */
     public function snapshot($timestamp)
@@ -34,7 +33,8 @@ trait Revisionable
     /**
      * Get record version at given step back in history.
      *
-     * @param  integer $step
+     * @param int $step
+     *
      * @return \Sofa\Revisionable\Laravel\Revision|\Sofa\Revisionable\laravel\Presenter|null
      */
     public function historyStep($step)
@@ -47,8 +47,9 @@ trait Revisionable
     /**
      * Determine if model has history at given timestamp if provided or any at all.
      *
-     * @param  \DateTime|string $timestamp  DateTime|Carbon object or parsable date string @see strtotime()
-     * @return boolean
+     * @param \DateTime|string $timestamp DateTime|Carbon object or parsable date string @see strtotime()
+     *
+     * @return bool
      */
     public function hasHistory($timestamp = null)
     {
@@ -96,7 +97,8 @@ trait Revisionable
     /**
      * Stringify revisionable attributes.
      *
-     * @param  array  $attributes
+     * @param array $attributes
+     *
      * @return array
      */
     protected function prepareAttributes(array $attributes)
@@ -111,7 +113,8 @@ trait Revisionable
     /**
      * Get an array of revisionable attributes.
      *
-     * @param  array  $values
+     * @param array $values
+     *
      * @return array
      */
     protected function getRevisionableItems(array $values)
@@ -146,7 +149,7 @@ trait Revisionable
     }
 
     /**
-     * Model has many Revisions
+     * Model has many Revisions.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -156,7 +159,7 @@ trait Revisionable
     }
 
     /**
-     * Model has one latestRevision
+     * Model has one latestRevision.
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -166,7 +169,7 @@ trait Revisionable
     }
 
     /**
-     * Accessor for revisions property
+     * Accessor for revisions property.
      *
      * @return \Illuminate\Database\Eloquent\Collection
      */
@@ -180,7 +183,8 @@ trait Revisionable
     }
 
     /**
-     * Accessor for latestRevision attribute
+     * Accessor for latestRevision attribute.
+     *
      * @link https://laravel.com/docs/eloquent-mutators#accessors-and-mutators
      *
      * @return \Sofa\Revisionable\Laravel\Presenter|\Sofa\Revisionable\Laravel\Revision
@@ -197,14 +201,17 @@ trait Revisionable
     /**
      * Wrap revision model with the presenter if provided.
      *
-     * @param  \Sofa\Revisionable\Laravel\Revision|\Illuminate\Database\Eloquent\Collection $history
+     * @param \Sofa\Revisionable\Laravel\Revision|\Illuminate\Database\Eloquent\Collection $history
+     *
      * @return \Sofa\Revisionable\Laravel\Presenter|\Sofa\Revisionable\Laravel\Revision
      */
     public function wrapRevision($history)
     {
-        return $presenter = $this->getRevisionPresenter()
-                ? $presenter::make($history, $this)
-                : $history;
+        if ($presenter = $this->getRevisionPresenter()) {
+            return $presenter::make($history, $this);
+        }
+
+        return $history;
     }
 
     /**
@@ -214,7 +221,7 @@ trait Revisionable
      */
     public function getRevisionPresenter()
     {
-        if (!property_exists($this->revisionPresenter)) {
+        if (!property_exists($this, 'revisionPresenter')) {
             return;
         }
 

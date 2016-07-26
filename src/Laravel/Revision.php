@@ -1,7 +1,8 @@
-<?php namespace Sofa\Revisionable\Laravel;
+<?php
+
+namespace Sofa\Revisionable\Laravel;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Collection;
 
 class Revision extends Model
 {
@@ -40,7 +41,8 @@ class Revision extends Model
     }
 
     /**
-     * Revision belongs to User (action Executor)
+     * Revision belongs to User (action Executor).
+     *
      * @link https://laravel.com/docs/eloquent-relationships#one-to-one
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -81,8 +83,9 @@ class Revision extends Model
     /**
      * Determine whether field was updated during current action.
      *
-     * @param  string $key
-     * @return boolean
+     * @param string $key
+     *
+     * @return bool
      */
     public function isUpdated($key)
     {
@@ -90,7 +93,7 @@ class Revision extends Model
     }
 
     /**
-     * Accessor for old property
+     * Accessor for old property.
      *
      * @return array
      */
@@ -100,7 +103,7 @@ class Revision extends Model
     }
 
     /**
-     * Accessor for new property
+     * Accessor for new property.
      *
      * @return array
      */
@@ -112,8 +115,9 @@ class Revision extends Model
     /**
      * Get single value from the new/old array.
      *
-     * @param  string $version
-     * @param  string $key
+     * @param string $version
+     * @param string $key
+     *
      * @return string
      */
     protected function getFromArray($version, $key)
@@ -134,8 +138,7 @@ class Revision extends Model
     /**
      * Set custom table name for the model.
      *
-     * @param  string  $table
-     * @return void
+     * @param string $table
      */
     public static function setCustomTable($table)
     {
@@ -147,8 +150,7 @@ class Revision extends Model
     /**
      * Set user model.
      *
-     * @param  string  $class
-     * @return void
+     * @param string $class
      */
     public static function setUserModel($class)
     {
@@ -156,10 +158,12 @@ class Revision extends Model
     }
 
     /**
-     * Query scope ordered
+     * Query scope ordered.
+     *
      * @link https://laravel.com/docs/eloquent#local-scopes
      *
      * @param  \Illuminate\Database\Eloquent\Builder
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeOrdered($query)
@@ -169,10 +173,12 @@ class Revision extends Model
 
     /**
      * Query scope for.
+     *
      * @link https://laravel.com/docs/eloquent#local-scopes
      *
-     * @param  \Illuminate\Database\Eloquent\Builder $query
-     * @param  \Illuminate\Database\Eloquent\Model|string $table
+     * @param \Illuminate\Database\Eloquent\Builder      $query
+     * @param \Illuminate\Database\Eloquent\Model|string $table
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public function scopeFor($query, $table)
@@ -187,8 +193,9 @@ class Revision extends Model
     /**
      * Handle dynamic method calls.
      *
-     * @param  string $method
-     * @param  array $parameters
+     * @param string $method
+     * @param array  $parameters
+     *
      * @return mixed
      */
     public function __call($method, $parameters)

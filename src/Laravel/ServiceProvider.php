@@ -4,8 +4,6 @@ namespace Sofa\Revisionable\Laravel;
 
 use Sofa\Revisionable\Logger;
 use Sofa\Revisionable\Adapters;
-use Sofa\Revisionable\Laravel\DbLogger;
-use Sofa\Revisionable\Laravel\Revision;
 
 /**
  * @method void publishes(array $paths, $group = null)
@@ -14,8 +12,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
     public function boot()
     {
@@ -23,26 +19,22 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
         $this->publishes([
             $path.'/config/config.php' => config_path('sofa_revisionable.php'),
-            $path.'/migrations/' => base_path('/database/migrations'),
         ]);
     }
 
     /**
      * Register the service provider.
-     *
-     * @return void
      */
     public function register()
     {
         $this->bindLogger();
         $this->bindUserProvider();
         $this->bootModel();
+        $this->registerCommand();
     }
 
     /**
      * Bind Revisionable logger implementation to the IoC.
-     *
-     * @return void
      */
     protected function bindLogger()
     {
@@ -52,13 +44,11 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->app->singleton('revisionable.logger', function ($app) use ($table, $connection) {
             return new DbLogger($app['db']->connection($connection), $table);
         });
-        $this->alias('revisionable.logger', Logger::class);
+        $this->app->alias('revisionable.logger', Logger::class);
     }
 
     /**
      * Bind user provider implementation to the IoC.
-     *
-     * @return void
      */
     protected function bindUserProvider()
     {
@@ -84,8 +74,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     /**
      * Bind adapter for Sentry to the IoC.
-     *
-     * @return void
      */
     protected function bindSentryProvider()
     {
@@ -98,8 +86,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     /**
      * Bind adapter for Sentinel to the IoC.
-     *
-     * @return void
      */
     protected function bindSentinelProvider()
     {
@@ -112,8 +98,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     /**
      * Bind adapter for JWT Auth to the IoC.
-     *
-     * @return void
      */
     private function bindJwtAuthProvider()
     {
@@ -126,8 +110,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     /**
      * Bind adapter for Illuminate Guard to the IoC.
-     *
-     * @return void
      */
     protected function bindGuardProvider()
     {
@@ -140,8 +122,6 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
 
     /**
      * Boot the Revision model.
-     *
-     * @return void
      */
     protected function bootModel()
     {
@@ -153,12 +133,28 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     }
 
     /**
+     * Register revisions migration generator command.
+     */
+    protected function registerCommand()
+    {
+        $this->app->singleton('revisions.migration', function ($app) {
+            return new RevisionsTableCommand($app['files'], $app['composer']);
+        });
+
+        $this->commands('revisions.migration');
+    }
+
+    /**
      * Get the services provided by the provider.
      *
      * @return string[]
      */
     public function provides()
     {
-        return ['revisionable.userprovider', 'revisionable.logger'];
+        return [
+            'revisionable.userprovider',
+            'revisionable.logger',
+            'revisions.migration',
+        ];
     }
 }
