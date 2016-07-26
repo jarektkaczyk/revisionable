@@ -1,8 +1,10 @@
-<?php namespace Sofa\Revisionable\Laravel;
+<?php
 
+namespace Sofa\Revisionable\Laravel;
+
+use DateTime;
 use Sofa\Revisionable\Logger;
 use Illuminate\Database\ConnectionInterface;
-use DateTime;
 
 class DbLogger implements Logger
 {

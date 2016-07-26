@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Collection;
 class Revision extends Model
 {
     /**
+     * Action executor user model.
+     *
+     * @var string
+     */
+    protected static $userModel;
+
+    /**
      * The database table used by the model.
      *
      * @var string
@@ -30,6 +37,17 @@ class Revision extends Model
         static::saving(function () {
             return false;
         });
+    }
+
+    /**
+     * Revision belongs to User (action Executor)
+     * @link https://laravel.com/docs/eloquent-relationships#one-to-one
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function executor()
+    {
+        return $this->belongsTo(static::$userModel, 'user');
     }
 
     /**
@@ -124,6 +142,46 @@ class Revision extends Model
         if (!isset(static::$customTable)) {
             static::$customTable = $table;
         }
+    }
+
+    /**
+     * Set user model.
+     *
+     * @param  string  $class
+     * @return void
+     */
+    public static function setUserModel($class)
+    {
+        static::$userModel = $class;
+    }
+
+    /**
+     * Query scope ordered
+     * @link https://laravel.com/docs/eloquent#local-scopes
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeOrdered($query)
+    {
+        return $query->latest()->latest('id');
+    }
+
+    /**
+     * Query scope for.
+     * @link https://laravel.com/docs/eloquent#local-scopes
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder $query
+     * @param  \Illuminate\Database\Eloquent\Model|string $table
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFor($query, $table)
+    {
+        if ($table instanceof Model) {
+            $table = $table->getTable();
+        }
+
+        return $query->where('table_name', $table);
     }
 
     /**

@@ -1,20 +1,17 @@
-<?php namespace Sofa\Revisionable\Laravel;
+<?php
 
-use Illuminate\Support\ServiceProvider as BaseProvider;
-use ReflectionClass;
+namespace Sofa\Revisionable\Laravel;
+
+use Sofa\Revisionable\Logger;
+use Sofa\Revisionable\Adapters;
+use Sofa\Revisionable\Laravel\DbLogger;
+use Sofa\Revisionable\Laravel\Revision;
 
 /**
  * @method void publishes(array $paths, $group = null)
  */
-class ServiceProvider extends BaseProvider
+class ServiceProvider extends \Illuminate\Support\ServiceProvider
 {
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
-     */
-    protected $defer = false;
-
     /**
      * Bootstrap any application services.
      *
@@ -22,9 +19,11 @@ class ServiceProvider extends BaseProvider
      */
     public function boot()
     {
+        $path = realpath(__DIR__.'/..');
+
         $this->publishes([
-            $this->guessPackagePath() . '/config/config.php' => config_path('sofa_revisionable.php'),
-            $this->guessPackagePath() . '/migrations/' => base_path('/database/migrations'),
+            $path.'/config/config.php' => config_path('sofa_revisionable.php'),
+            $path.'/migrations/' => base_path('/database/migrations'),
         ]);
     }
 
@@ -36,11 +35,7 @@ class ServiceProvider extends BaseProvider
     public function register()
     {
         $this->bindLogger();
-
         $this->bindUserProvider();
-
-        $this->bindListener();
-
         $this->bootModel();
     }
 
@@ -52,10 +47,12 @@ class ServiceProvider extends BaseProvider
     protected function bindLogger()
     {
         $table = $this->app['config']->get('sofa_revisionable.table', 'revisions');
+        $connection = $this->app['config']->get('sofa_revisionable.connection');
 
-        $this->app->bindShared('revisionable.logger', function ($app) use ($table) {
-            return new \Sofa\Revisionable\Laravel\DbLogger($app['db']->connection(), $table);
+        $this->app->singleton('revisionable.logger', function ($app) use ($table, $connection) {
+            return new DbLogger($app['db']->connection($connection), $table);
         });
+        $this->alias('revisionable.logger', Logger::class);
     }
 
     /**
@@ -92,10 +89,10 @@ class ServiceProvider extends BaseProvider
      */
     protected function bindSentryProvider()
     {
-        $this->app->bindShared('revisionable.userprovider', function ($app) {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
-            return new \Sofa\Revisionable\Adapters\Sentry($app['sentry'], $field);
+            return new Adapters\Sentry($app['sentry'], $field);
         });
     }
 
@@ -106,10 +103,10 @@ class ServiceProvider extends BaseProvider
      */
     protected function bindSentinelProvider()
     {
-        $this->app->bindShared('revisionable.userprovider', function ($app) {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
-            return new \Sofa\Revisionable\Adapters\Sentinel($app['sentinel'], $field);
+            return new Adapters\Sentinel($app['sentinel'], $field);
         });
     }
 
@@ -120,10 +117,10 @@ class ServiceProvider extends BaseProvider
      */
     private function bindJwtAuthProvider()
     {
-        $this->app->bindShared('revisionable.userprovider', function ($app) {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
-            return new \Sofa\Revisionable\Adapters\JwtAuth($app['tymon.jwt.auth'], $field);
+            return new Adapters\JwtAuth($app['tymon.jwt.auth'], $field);
         });
     }
 
@@ -134,22 +131,10 @@ class ServiceProvider extends BaseProvider
      */
     protected function bindGuardProvider()
     {
-        $this->app->bindShared('revisionable.userprovider', function ($app) {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
-            return new \Sofa\Revisionable\Adapters\Guard($app['auth']->driver(), $field);
-        });
-    }
-
-    /**
-     * Bind listener implementation to the Ioc.
-     *
-     * @return void
-     */
-    protected function bindListener()
-    {
-        $this->app->bind('Sofa\Revisionable\Listener', function ($app) {
-            return new \Sofa\Revisionable\Laravel\Listener($app['revisionable.userprovider']);
+            return new Adapters\Guard($app['auth']->driver(), $field);
         });
     }
 
@@ -161,8 +146,10 @@ class ServiceProvider extends BaseProvider
     protected function bootModel()
     {
         $table = $this->app['config']->get('sofa_revisionable.table', 'revisions');
+        $user = $this->app['config']->get('sofa_revisionable.usermodel', 'App\User');
 
-        forward_static_call_array(['\Sofa\Revisionable\Laravel\Revision', 'setCustomTable'], [$table]);
+        forward_static_call_array([Revision::class, 'setCustomTable'], [$table]);
+        forward_static_call_array([Revision::class, 'setUserModel'], [$user]);
     }
 
     /**
@@ -172,21 +159,6 @@ class ServiceProvider extends BaseProvider
      */
     public function provides()
     {
-        return [
-            'revisionable.logger',
-            'revisionable.userprovider',
-        ];
-    }
-
-    /**
-     * Guess real path of the package.
-     *
-     * @return string
-     */
-    public function guessPackagePath()
-    {
-        $path = (new ReflectionClass($this))->getFileName();
-
-        return realpath(dirname($path).'/../');
+        return ['revisionable.userprovider', 'revisionable.logger'];
     }
 }

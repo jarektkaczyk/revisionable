@@ -4,6 +4,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | User model (for executor relation on Revision model).
+    |--------------------------------------------------------------------------
+    |
+    | By default App\User.
+    */
+    'usermodel' => 'App\User',
+
+    /*
+    |--------------------------------------------------------------------------
     | User provider (auth) implementation.
     |--------------------------------------------------------------------------
     |
@@ -28,7 +37,7 @@ return [
     |  - id for illuminate
     |  - login field (email) for sentry/sentinel
     */
-    'userfield'    => null,
+    'userfield' => 'id',
 
 
     /*
@@ -36,6 +45,14 @@ return [
     | Table used for the revisions.
     |--------------------------------------------------------------------------
     */
-    'table'        => 'revisions',
+    'table' => 'revisions',
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Database connection used for the revisions.
+    |--------------------------------------------------------------------------
+    */
+    'connection' => null,
 
 ];

@@ -1,8 +1,10 @@
-<?php namespace Sofa\Revisionable\Laravel;
+<?php
 
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
+namespace Sofa\Revisionable\Laravel;
+
 use Sofa\Revisionable\Revisionable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
 
 class Presenter
 {
@@ -187,7 +189,7 @@ class Presenter
         // If we are working with related revisionable model then
         // return its version at the time of current revision.
         if ($target instanceof Revisionable) {
-            return ($target->revisionSnapshot($this->created_at)) ?: $target;
+            return ($target->snapshot($this->created_at)) ?: $target;
         }
 
         return $target;

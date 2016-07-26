@@ -1,35 +1,36 @@
-<?php namespace Sofa\Revisionable\Laravel;
+<?php
 
-use Sofa\Revisionable\Listener as ListenerInterface;
+namespace Sofa\Revisionable\Laravel;
+
+use Sofa\Revisionable\Logger;
 use Sofa\Revisionable\UserProvider;
-use Sofa\Revisionable\Revisionable;
+use Sofa\Revisionable\Laravel\Revisionable;
 
-class Listener implements ListenerInterface
+class Listener implements \Sofa\Revisionable\Listener
 {
-    /**
-     * User provider instance.
-     *
-     * @var mixed
-     */
+    /** @var \Sofa\Revisionable\UserProvider */
     protected $userProvider;
 
+    /** @var \Sofa\Revisionable\Logger */
+    protected $logger;
+
     /**
-     * Create new listener.
-     *
-     * @param UserProvider $userProvider
+     * @param \Sofa\Revisionable\UserProvider $userProvider
+     * @param \Sofa\Revisionable\Logger $logger
      */
-    public function __construct(UserProvider $userProvider)
+    public function __construct(UserProvider $userProvider, Logger $logger)
     {
         $this->userProvider = $userProvider;
+        $this->logger = $logger;
     }
 
     /**
      * Handle created event.
      *
-     * @param  \Sofa\Revisionable\Revisionable $revisioned
-     * @return null
+     * @param  \Illuminate\Database\Eloquent\Model $revisioned
+     * @return void
      */
-    public function onCreated(Revisionable $revisioned)
+    public function created($revisioned)
     {
         $this->log('created', $revisioned);
     }
@@ -37,10 +38,10 @@ class Listener implements ListenerInterface
     /**
      * Handle updated event.
      *
-     * @param  \Sofa\Revisionable\Revisionable $revisioned
-     * @return null
+     * @param  \Illuminate\Database\Eloquent\Model $revisioned
+     * @return void
      */
-    public function onUpdated(Revisionable $revisioned)
+    public function updated($revisioned)
     {
         if (count($revisioned->getDiff())) {
             $this->log('updated', $revisioned);
@@ -50,10 +51,10 @@ class Listener implements ListenerInterface
     /**
      * Handle deleted event.
      *
-     * @param  \Sofa\Revisionable\Revisionable $revisioned
-     * @return null
+     * @param  \Illuminate\Database\Eloquent\Model $revisioned
+     * @return void
      */
-    public function onDeleted(Revisionable $revisioned)
+    public function deleted($revisioned)
     {
         $this->log('deleted', $revisioned);
     }
@@ -61,42 +62,34 @@ class Listener implements ListenerInterface
     /**
      * Handle restored event.
      *
-     * @param  \Sofa\Revisionable\Revisionable $revisioned
-     * @return null
+     * @param  \Illuminate\Database\Eloquent\Model $revisioned
+     * @return void
      */
-    public function onRestored(Revisionable $revisioned)
+    public function restored($revisioned)
     {
         $this->log('restored', $revisioned);
-    }
-
-    /**
-     * Get currently logged in user.
-     *
-     * @return string|null
-     */
-    public function getCurrentUser()
-    {
-        return $this->userProvider->getUser();
     }
 
     /**
      * Log the revision.
      *
      * @param  string $action
-     * @param  \Sofa\Revisionable\Revisionable $revisioned
-     * @return null
+     * @param  \Illuminate\Database\Eloquent\Model
+     * @return void
      */
-    protected function log($action, Revisionable $revisioned)
+    protected function log($action, $revisioned)
     {
-        if (!$revisioned->isRevisioned()) {
-            return;
+        if (!in_array(Revisionable::class, class_uses_recursive($revisioned))) {
+            throw new RuntimeException(sprintf(
+                'Class [%s] must use Revisionable trait in order to track revisions',
+                get_class($revisioned)
+            ));
         }
 
         $table = $revisioned->getTable();
         $id    = $revisioned->getKey();
-        $user  = $this->getCurrentUser();
-        $old   = [];
-        $new   = [];
+        $user  = $this->userProvider->getUser();
+        $old = $new = [];
 
         switch ($action) {
             case 'created':
@@ -111,12 +104,10 @@ class Listener implements ListenerInterface
                 break;
         }
 
-        $logger = $revisioned->getRevisionableLogger();
-
         if ($connection = $revisioned->getRevisionableConnection()) {
-            $logger->on($connection);
+            $this->logger->on($connection);
         }
 
-        $logger->revisionLog($action, $table, $id, $old, $new, $user);
+        $this->logger->revisionLog($action, $table, $id, $old, $new, $user);
     }
 }
