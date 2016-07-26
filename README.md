@@ -105,12 +105,12 @@ You can provide additional `--database` param if you want the migration to be ru
 ```php
 <?php namespace App;
 
-use Sofa\Revisionable\Laravel\RevisionableTrait; // trait
-use Sofa\Revisionable\Revisionable; // interface
+use Illuminate\Database\Eloquent\Model;
+use Sofa\Revisionable\Laravel\Revisionable; // trait
 
-class User extends \Eloquent implements Revisionable {
-
-    use RevisionableTrait;
+class User extends Model
+{
+    use Revisionable;
 
     /*
      * Set revisionable whitelist - only changes to any
@@ -132,13 +132,12 @@ And that's all to get your started!
 ```php
 namespace App\Models;
 
-use Sofa\Revisionable\Revisionable;
-use Sofa\Revisionable\Laravel\RevisionableTrait;
+use Illuminate\Database\Eloquent\Model;
+use Sofa\Revisionable\Laravel\Revisionable;
 
-
-class Ticket extends \Eloquent implements Revisionable {
-
-    use RevisionableTrait;
+class Ticket extends Model
+{
+    use Revisionable;
 }
 ```
 
@@ -148,9 +147,6 @@ $ php artisan tinker
 
 >>> $ticket = App\Models\Ticket::first();
 => <App\Models\Ticket>
-
->>> $revision = $ticket->latestRevision;
-=> <Sofa\Revisionable\Laravel\Revision>
 
 >>> $revision->getDiff();
 => [
@@ -202,13 +198,12 @@ But here's where you can leverage bundled `Presenter` in order to make useful ad
 ```php
 namespace App\Models;
 
-use Sofa\Revisionable\Revisionable;
-use Sofa\Revisionable\Laravel\RevisionableTrait;
+use Illuminate\Database\Eloquent\Model;
+use Sofa\Revisionable\Laravel\Revisionable;
 
-
-class Ticket extends \Eloquent implements Revisionable {
-
-    use RevisionableTrait;
+class Ticket extends Model
+{
+    use Revisionable;
 
     protected $revisionPresenter = 'App\Presenters\Revisions\Ticket';
 }
@@ -219,8 +214,8 @@ namespace App\Presenters\Revisions;
 
 use Sofa\Revisionable\Laravel\Presenter;
 
-class Ticket extends Presenter {
-
+class Ticket extends Presenter
+{
     protected $labels = [
         'item_id'        => 'Przedmiot',
         'customer_id'    => 'Klient',
@@ -253,9 +248,6 @@ $ php artisan tinker
 
 >>> $ticket = App\Models\Ticket::first();
 => <App\Models\Ticket>
-
->>> $revision = $ticket->latestRevision; // automatically wrapped in presenter
-=> <App\Presenters\Revisions\Ticket>
 
 >>> $revision->old('item_id'); // value fetched from the relationship
 => "komputer pc"
