@@ -4,6 +4,7 @@ namespace Sofa\Revisionable\Laravel;
 
 use Sofa\Revisionable\Logger;
 use Sofa\Revisionable\Adapters;
+use Sofa\Revisionable\UserProvider;
 
 /**
  * @method void publishes(array $paths, $group = null)
@@ -70,6 +71,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             default:
                 $this->bindGuardProvider();
         }
+        $this->app->alias('revisionable.userprovider', UserProvider::class);
     }
 
     /**
