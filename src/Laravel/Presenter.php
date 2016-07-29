@@ -160,7 +160,7 @@ class Presenter
     protected function dataGet($target, $key)
     {
         foreach (explode('.', $key) as $segment) {
-            if (is_object($target) && in_array(Revisionable::class, class_uses_recursive($target))) {
+            if (is_object($target) && in_array(Revisionable::class, class_uses_recursive(get_class($target)))) {
                 $target = $this->passThroughRevisionable($target, $segment);
             } elseif ($target instanceof self || $target instanceof Revision) {
                 $target = $this->passThroughRevision($target, $segment);
@@ -189,7 +189,7 @@ class Presenter
 
         // If we are working with related revisionable model then
         // return its version at the time of current revision.
-        if (is_object($target) && in_array(Revisionable::class, class_uses_recursive($target))) {
+        if (is_object($target) && in_array(Revisionable::class, class_uses_recursive(get_class($target)))) {
             return ($target->snapshot($this->created_at)) ?: $target;
         }
 
