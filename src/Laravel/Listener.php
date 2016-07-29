@@ -98,10 +98,6 @@ class Listener
                 break;
         }
 
-        if ($connection = $revisioned->getRevisionableConnection()) {
-            $this->logger->on($connection);
-        }
-
         $this->logger->revisionLog($action, $table, $id, $old, $new, $user);
     }
 }
