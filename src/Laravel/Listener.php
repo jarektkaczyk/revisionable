@@ -73,7 +73,7 @@ class Listener
      */
     protected function log($action, $revisioned)
     {
-        if (!in_array(Revisionable::class, class_uses_recursive($revisioned))) {
+        if (!in_array(Revisionable::class, class_uses_recursive(get_class($revisioned)))) {
             throw new RuntimeException(sprintf(
                 'Class [%s] must use Revisionable trait in order to track revisions',
                 get_class($revisioned)
