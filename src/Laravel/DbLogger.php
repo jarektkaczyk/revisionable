@@ -6,6 +6,9 @@ use DateTime;
 use Sofa\Revisionable\Logger;
 use Illuminate\Database\ConnectionInterface;
 
+/**
+ * @deprecated since v2.1
+ */
 class DbLogger implements Logger
 {
     /**

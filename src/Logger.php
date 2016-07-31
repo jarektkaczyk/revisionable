@@ -1,4 +1,6 @@
-<?php namespace Sofa\Revisionable;
+<?php
+
+namespace Sofa\Revisionable;
 
 interface Logger
 {

@@ -2,7 +2,6 @@
 
 namespace Sofa\Revisionable\Laravel;
 
-use Sofa\Revisionable\Logger;
 use Sofa\Revisionable\Adapters;
 use Sofa\Revisionable\UserProvider;
 
@@ -28,24 +27,9 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
      */
     public function register()
     {
-        $this->bindLogger();
         $this->bindUserProvider();
         $this->bootModel();
-        $this->registerCommand();
-    }
-
-    /**
-     * Bind Revisionable logger implementation to the IoC.
-     */
-    protected function bindLogger()
-    {
-        $table = $this->app['config']->get('sofa_revisionable.table', 'revisions');
-        $connection = $this->app['config']->get('sofa_revisionable.connection');
-
-        $this->app->singleton('revisionable.logger', function ($app) use ($table, $connection) {
-            return new DbLogger($app['db']->connection($connection), $table);
-        });
-        $this->app->alias('revisionable.logger', Logger::class);
+        $this->registerCommands();
     }
 
     /**
@@ -137,13 +121,19 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     /**
      * Register revisions migration generator command.
      */
-    protected function registerCommand()
+    protected function registerCommands()
     {
         $this->app->singleton('revisions.migration', function ($app) {
             return new RevisionsTableCommand($app['files'], $app['composer']);
         });
+        $this->app->singleton('revisions.upgrade2_1', function ($app) {
+            return new RevisionsUpgradeCommand($app['files'], $app['composer']);
+        });
 
-        $this->commands('revisions.migration');
+        $this->commands([
+            'revisions.migration',
+            'revisions.upgrade2_1',
+        ]);
     }
 
     /**
@@ -155,8 +145,8 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         return [
             'revisionable.userprovider',
-            'revisionable.logger',
             'revisions.migration',
+            'revisions.upgrade2_1',
         ];
     }
 }
