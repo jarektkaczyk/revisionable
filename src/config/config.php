@@ -23,6 +23,7 @@ return [
     |  - sentry
     |  - sentinel
     |  - jwt-auth
+    |  - session
     */
     'userprovider' => 'illuminate',
 
