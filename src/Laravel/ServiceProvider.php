@@ -102,7 +102,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
 
-            return new Adapters\Guard($app['auth']->driver(), $field);
+            return new Adapters\Guard($app['auth']->guard(), $field);
         });
     }
 
@@ -126,13 +126,13 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         $this->app->singleton('revisions.migration', function ($app) {
             return new RevisionsTableCommand($app['files'], $app['composer']);
         });
-        $this->app->singleton('revisions.upgrade2_1', function ($app) {
+        $this->app->singleton('revisions.upgrade5_3', function ($app) {
             return new RevisionsUpgradeCommand($app['files'], $app['composer']);
         });
 
         $this->commands([
             'revisions.migration',
-            'revisions.upgrade2_1',
+            'revisions.upgrade5_3',
         ]);
     }
 
@@ -146,7 +146,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
         return [
             'revisionable.userprovider',
             'revisions.migration',
-            'revisions.upgrade2_1',
+            'revisions.upgrade5_3',
         ];
     }
 }

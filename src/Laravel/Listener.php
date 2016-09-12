@@ -2,6 +2,7 @@
 
 namespace Sofa\Revisionable\Laravel;
 
+use Carbon\Carbon;
 use Sofa\Revisionable\UserProvider;
 
 class Listener
@@ -89,6 +90,7 @@ class Listener
             'new' => json_encode($new),
             'ip' => data_get($_SERVER, 'REMOTE_ADDR'),
             'ip_forwarded' => data_get($_SERVER, 'HTTP_X_FORWARDED_FOR'),
+            'created_at' => Carbon::now(),
         ]);
     }
 }

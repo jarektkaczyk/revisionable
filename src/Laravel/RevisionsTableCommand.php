@@ -3,7 +3,7 @@
 namespace Sofa\Revisionable\Laravel;
 
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Composer;
+use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
 
 class RevisionsTableCommand extends Command

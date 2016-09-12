@@ -3,16 +3,16 @@
 namespace Sofa\Revisionable\Laravel;
 
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Composer;
+use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
 
 class RevisionsUpgradeCommand extends Command
 {
     /** @var string */
-    protected $name = 'revisions:upgrade-2.1';
+    protected $name = 'revisions:upgrade-5.3';
 
     /** @var string */
-    protected $description = 'Create a migration upgrading to v2.1';
+    protected $description = 'Create a migration upgrading to v5.3';
 
     /** @var \Illuminate\Filesystem\Filesystem */
     protected $files;
@@ -37,7 +37,7 @@ class RevisionsUpgradeCommand extends Command
     public function fire()
     {
         $path = $this->createBaseMigration();
-        $this->files->put($path, $this->files->get(__DIR__.'/../migrations/upgrade-2.1.stub'));
+        $this->files->put($path, $this->files->get(__DIR__.'/../migrations/upgrade-5.3stub'));
         $this->info('Revisions upgrade migration created successfully!');
         $this->composer->dumpAutoloads();
     }

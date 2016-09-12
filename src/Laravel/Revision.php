@@ -29,6 +29,10 @@ class Revision extends Model
         'table_name', 'action', 'user_id', 'user', 'old', 'new', 'ip', 'ip_forwarded',
     ];
 
+    public $timestamps = false;
+
+    protected $dates = ['created_at'];
+
     /**
      * {@inheritdoc}
      */

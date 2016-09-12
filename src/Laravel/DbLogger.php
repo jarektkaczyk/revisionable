@@ -7,7 +7,7 @@ use Sofa\Revisionable\Logger;
 use Illuminate\Database\ConnectionInterface;
 
 /**
- * @deprecated since v2.1
+ * @deprecated since v5.3
  */
 class DbLogger implements Logger
 {
