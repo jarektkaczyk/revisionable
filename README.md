@@ -6,6 +6,8 @@ Nice and easy way to handle revisions of your db.
 
 * Handles the revisions in **bulk** - one entry covers all the created/updated fields, what makes it really **easy to eg. compare 2 given versions** or get all the data changed during single action.
 
+**If I'm saving you some time with my work, you can back me up on [Patreon page](https://patreon.com/jarektkaczyk).**
+
 
 ## Requirements
 
