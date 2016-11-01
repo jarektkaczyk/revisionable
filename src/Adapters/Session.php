@@ -42,18 +42,20 @@ class Session implements UserProvider
      */
     public function getUser()
     {
-        return $this->getUserFieldValue();
+        if ($user = $this->provider) {
+            return ($field = $this->field) ? (string) $user->get($field)  : $user->get('id');
+        }
     }
 
     /**
-     * Get value from the user to be saved as the author.
+     * Get id of the currently logged in user.
      *
-     * @return string|null
+     * @return integer|null
      */
-    protected function getUserFieldValue()
+    public function getUserId()
     {
-        if ($user = $this->provider) {
-            return ($field = $this->field) ? (string) $user->get($field)  : $user->get('id');
+        if ($user = $this->provider->user()) {
+            return $user->getKey();
         }
     }
 }
