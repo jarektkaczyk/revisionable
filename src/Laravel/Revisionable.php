@@ -27,7 +27,7 @@ trait Revisionable
                          ->where('created_at', '<=', Carbon::parse($timestamp))
                          ->first();
 
-        return ($revision) ? $this->wrapRevision($revision) : null;
+        return $this->wrapRevision($revision);
     }
 
     /**
@@ -39,9 +39,7 @@ trait Revisionable
      */
     public function historyStep($step)
     {
-        $revision = $this->revisions()->skip($step)->first();
-
-        return ($revision) ? $this->wrapRevision($revision) : null;
+        return $this->wrapRevision($this->revisions()->skip($step)->first());
     }
 
     /**
@@ -155,7 +153,8 @@ trait Revisionable
      */
     public function revisions()
     {
-        return $this->hasMany(Revision::class, 'row_id')->for($this)->ordered();
+        return $this->morphMany(Revision::class, 'revisionable', 'revisionable_type', 'row_id')
+                    ->ordered();
     }
 
     /**
@@ -165,7 +164,8 @@ trait Revisionable
      */
     public function latestRevision()
     {
-        return $this->hasOne(Revision::class, 'row_id')->for($this)->ordered();
+        return $this->morphOne(Revision::class, 'revisionable', 'revisionable_type', 'row_id')
+                    ->ordered();
     }
 
     /**
@@ -207,7 +207,7 @@ trait Revisionable
      */
     public function wrapRevision($history)
     {
-        if ($presenter = $this->getRevisionPresenter()) {
+        if ($history && $presenter = $this->getRevisionPresenter()) {
             return $presenter::make($history, $this);
         }
 

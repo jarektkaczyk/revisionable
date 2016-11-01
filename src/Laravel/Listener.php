@@ -2,25 +2,17 @@
 
 namespace Sofa\Revisionable\Laravel;
 
-use Sofa\Revisionable\Logger;
 use Sofa\Revisionable\UserProvider;
 
 class Listener
 {
-    /** @var \Sofa\Revisionable\UserProvider */
-    protected $userProvider;
-
-    /** @var \Sofa\Revisionable\Logger */
-    protected $logger;
-
     /**
      * @param \Sofa\Revisionable\UserProvider $userProvider
      * @param \Sofa\Revisionable\Logger       $logger
      */
-    public function __construct(UserProvider $userProvider, Logger $logger)
+    public function __construct(UserProvider $userProvider)
     {
         $this->userProvider = $userProvider;
-        $this->logger = $logger;
     }
 
     /**
@@ -73,16 +65,6 @@ class Listener
      */
     protected function log($action, $revisioned)
     {
-        if (!in_array(Revisionable::class, class_uses_recursive(get_class($revisioned)))) {
-            throw new RuntimeException(sprintf(
-                'Class [%s] must use Revisionable trait in order to track revisions',
-                get_class($revisioned)
-            ));
-        }
-
-        $table = $revisioned->getTable();
-        $id = $revisioned->getKey();
-        $user = $this->userProvider->getUser();
         $old = $new = [];
 
         switch ($action) {
@@ -98,6 +80,15 @@ class Listener
                 break;
         }
 
-        $this->logger->revisionLog($action, $table, $id, $old, $new, $user);
+        $revisioned->revisions()->create([
+            'table_name' => $revisioned->getTable(),
+            'action' => $action,
+            'user_id' => $this->userProvider->getUserId(),
+            'user' => $this->userProvider->getUser(),
+            'old' => json_encode($old),
+            'new' => json_encode($new),
+            'ip' => data_get($_SERVER, 'REMOTE_ADDR'),
+            'ip_forwarded' => data_get($_SERVER, 'HTTP_X_FORWARDED_FOR'),
+        ]);
     }
 }

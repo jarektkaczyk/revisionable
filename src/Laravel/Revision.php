@@ -25,7 +25,9 @@ class Revision extends Model
      *
      * @var array
      */
-    protected $fillable = ['*'];
+    protected $fillable = [
+        'table_name', 'action', 'user_id', 'user', 'old', 'new', 'ip', 'ip_forwarded',
+    ];
 
     /**
      * {@inheritdoc}
@@ -35,7 +37,7 @@ class Revision extends Model
         parent::boot();
 
         // Make it read-only
-        static::saving(function () {
+        static::updating(function () {
             return false;
         });
     }
@@ -49,7 +51,20 @@ class Revision extends Model
      */
     public function executor()
     {
-        return $this->belongsTo(static::$userModel, 'user');
+        return $this->belongsTo(static::$userModel, 'user_id');
+    }
+
+    /**
+     * Revision morphs to models in revisioned_type.
+     *
+     * @link https://laravel.com/docs/eloquent-relationships#polymorphic-relations
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function revisioned()
+    {
+        // For BC we use row_id rather than revisionable_id
+        return $this->morphTo('revisioned', 'revisionable_type', 'row_id');
     }
 
     /**

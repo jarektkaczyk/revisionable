@@ -40,18 +40,20 @@ class Guard implements UserProvider
      */
     public function getUser()
     {
-        return $this->getUserFieldValue();
+        if ($user = $this->provider->user()) {
+            return ($field = $this->field) ? (string) $user->{$field} : $user->getAuthIdentifier();
+        }
     }
 
     /**
-     * Get value from the user to be saved as the author.
+     * Get id of the currently logged in user.
      *
-     * @return string|null
+     * @return integer|null
      */
-    protected function getUserFieldValue()
+    public function getUserId()
     {
         if ($user = $this->provider->user()) {
-            return ($field = $this->field) ? (string) $user->{$field} : $user->getAuthIdentifier();
+            return $user->getKey();
         }
     }
 }

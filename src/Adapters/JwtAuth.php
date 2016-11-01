@@ -40,18 +40,20 @@ class JwtAuth implements UserProvider
      */
     public function getUser()
     {
-        return $this->getUserFieldValue();
+        if ($user = $this->provider->parseToken()->toUser()) {
+            return ($field = $this->field) ? (string) $user->{$field} : $this->provider->getIdentifier();
+        }
     }
 
     /**
-     * Get value from the user to be saved as the author.
+     * Get id of the currently logged in user.
      *
-     * @return string|null
+     * @return integer|null
      */
-    protected function getUserFieldValue()
+    public function getUserId()
     {
         if ($user = $this->provider->parseToken()->toUser()) {
-            return ($field = $this->field) ? (string) $user->{$field} : $this->provider->getIdentifier();
+            return $user->getKey();
         }
     }
 }
