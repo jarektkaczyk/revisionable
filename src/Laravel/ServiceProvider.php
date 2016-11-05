@@ -52,6 +52,10 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
                 $this->bindJwtAuthProvider();
                 break;
 
+            case 'session':
+                $this->bindSessionProvider();
+                break;
+
             default:
                 $this->bindGuardProvider();
         }
@@ -103,6 +107,19 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
             $field = $app['config']->get('sofa_revisionable.userfield');
 
             return new Adapters\Guard($app['auth']->guard(), $field);
+        });
+    }
+
+    /**
+     * Bind adapter for Session to the IoC.
+     *
+     * @return void
+     */
+    protected function bindSessionProvider()
+    {
+        $this->app->singleton('revisionable.userprovider', function ($app) {
+            $field = $app['config']->get('sofa_revisionable.userfield');
+            return new \Sofa\Revisionable\Adapters\SessionProvider(session(), $field);
         });
     }
 
