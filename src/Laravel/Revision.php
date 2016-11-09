@@ -26,7 +26,8 @@ class Revision extends Model
      * @var array
      */
     protected $fillable = [
-        'table_name', 'action', 'user_id', 'user', 'old', 'new', 'ip', 'ip_forwarded',
+        'table_name', 'action', 'user_id', 'user', 'old',
+        'new', 'ip', 'ip_forwarded', 'created_at',
     ];
 
     public $timestamps = false;
