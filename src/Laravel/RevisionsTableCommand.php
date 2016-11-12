@@ -3,7 +3,7 @@
 namespace Sofa\Revisionable\Laravel;
 
 use Illuminate\Console\Command;
-use Illuminate\Foundation\Composer;
+use Illuminate\Support\Composer;
 use Illuminate\Filesystem\Filesystem;
 
 class RevisionsTableCommand extends Command
@@ -17,12 +17,12 @@ class RevisionsTableCommand extends Command
     /** @var \Illuminate\Filesystem\Filesystem */
     protected $files;
 
-    /** @var \Illuminate\Foundation\Composer */
+    /** @var \Illuminate\Support\Composer */
     protected $composer;
 
     /**
      * @param \Illuminate\Filesystem\Filesystem $files
-     * @param \Illuminate\Foundation\Composer   $composer
+     * @param \Illuminate\Support\Composer   $composer
      */
     public function __construct(Filesystem $files, Composer $composer)
     {
