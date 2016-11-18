@@ -37,7 +37,7 @@ class RevisionsUpgradeCommand extends Command
     public function fire()
     {
         $path = $this->createBaseMigration();
-        $this->files->put($path, $this->files->get(__DIR__.'/../migrations/upgrade-5.3stub'));
+        $this->files->put($path, $this->files->get(__DIR__.'/../migrations/upgrade-5.3.stub'));
         $this->info('Revisions upgrade migration created successfully!');
         $this->composer->dumpAutoloads();
     }
