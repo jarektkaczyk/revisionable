@@ -18,12 +18,7 @@ Nice and easy way to handle revisions of your db.
 ### 1. Download the package or require in your `composer.json`:
 
 ```
-    "require": {
-        ...
-        "sofa/revisionable": "~2.0",
-        ...
-    },
-
+composer require sofa/revisionable
 ```
 
 ### 2. Add the service provider to your `app/config/app.php`:
