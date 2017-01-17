@@ -119,7 +119,7 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->app->singleton('revisionable.userprovider', function ($app) {
             $field = $app['config']->get('sofa_revisionable.userfield');
-            return new \Sofa\Revisionable\Adapters\SessionProvider(session(), $field);
+            return new Adapters\Session(session(), $field);
         });
     }
 
