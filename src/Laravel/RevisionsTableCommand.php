@@ -34,7 +34,7 @@ class RevisionsTableCommand extends Command
     /**
      * Execute the console command.
      */
-    public function fire()
+    public function handle()
     {
         $path = $this->createBaseMigration();
         $this->files->put($path, $this->files->get(__DIR__.'/../migrations/revisions.stub'));
