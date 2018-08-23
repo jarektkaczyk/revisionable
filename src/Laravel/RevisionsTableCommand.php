@@ -30,11 +30,20 @@ class RevisionsTableCommand extends Command
         $this->files = $files;
         $this->composer = $composer;
     }
+    
+    /**
+     * Alias for handle()
+     * Backward compatibility
+     */
+    public function fire()
+    {
+        return $this->handle();
+    }
 
     /**
      * Execute the console command.
      */
-    public function fire()
+    public function handle()
     {
         $path = $this->createBaseMigration();
         $this->files->put($path, $this->files->get(__DIR__.'/../migrations/revisions.stub'));

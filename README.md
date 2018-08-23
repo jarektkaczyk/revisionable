@@ -107,6 +107,7 @@ return [
 
 ```
 ~$ php artisan revisions:table
+~$ php artisan revisions:upgrade-5.3
 ~$ php artisan migrate [--database=custom_connection]
 ```
 
