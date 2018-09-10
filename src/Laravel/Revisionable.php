@@ -3,6 +3,7 @@
 namespace Sofa\Revisionable\Laravel;
 
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 trait Revisionable
 {
@@ -228,5 +229,28 @@ trait Revisionable
         return class_exists($this->revisionPresenter)
                 ? $this->revisionPresenter
                 : Presenter::class;
+    }
+
+    /**
+     * Get all updates for a given field.
+     *
+     * @param  string $field
+     * @return Illuminate\Support\Collection
+     */
+    public function getFieldHistory(string $field) : Collection
+    {
+        return $this->revisions->map(function ($revision) use ($field) : ?array {
+            if ($revision->old($field) == $revision->new($field)) {
+                return null;
+            }
+
+            return [
+                'created_at' => (string) $revision->created_at,
+                'user_id' => $revision->executor->id ?? null,
+                'user_email' => $revision->executor->email ?? null,
+                'old' => $revision->old($field),
+                'new' => $revision->new($field),
+            ];
+        })->filter()->values();
     }
 }
