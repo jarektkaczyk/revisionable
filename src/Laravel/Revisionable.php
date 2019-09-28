@@ -66,7 +66,8 @@ trait Revisionable
      */
     public function getDiff()
     {
-        return array_diff_assoc($this->getNewAttributes(), $this->getOldAttributes());
+        return array_map('unserialize',
+            array_diff(array_map('serialize', $this->getNewAttributes()), array_map('serialize', $this->getOldAttributes())));
     }
 
     /**
@@ -103,10 +104,24 @@ trait Revisionable
     protected function prepareAttributes(array $attributes)
     {
         return array_map(function ($attribute) {
-            return ($attribute instanceof DateTime)
-                ? $this->fromDateTime($attribute)
-                : (string) $attribute;
+            if ($attribute instanceof DateTime) {
+                return $this->fromDateTime($attribute);
+            } elseif ($this->isJSON($attribute)) {
+                return $this->fromJson($attribute);
+            } else {
+                return (string) $attribute;
+            }
         }, $attributes);
+    }
+
+    /**
+     * Check if a string is JSON.
+     *
+     * @param $string
+     * @return bool
+     */
+    protected function isJSON($string){
+        return is_string($string) && is_array(json_decode($string, true)) && (json_last_error() == JSON_ERROR_NONE) ? true : false;
     }
 
     /**
