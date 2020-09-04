@@ -142,7 +142,7 @@ class Revision extends Model
      */
     protected function getFromArray($version, $key)
     {
-        return $this->{$version} ?? $key;
+        return \Illuminate\Support\Arr::get($this->{$version}, $key);
     }
 
     /**
