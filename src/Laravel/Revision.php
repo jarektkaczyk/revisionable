@@ -142,7 +142,7 @@ class Revision extends Model
      */
     protected function getFromArray($version, $key)
     {
-        return array_get($this->{$version}, $key);
+        return $this->{$version} ?? $key;
     }
 
     /**
