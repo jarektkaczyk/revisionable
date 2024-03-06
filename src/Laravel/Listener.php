@@ -7,13 +7,8 @@ use Sofa\Revisionable\UserProvider;
 
 class Listener
 {
-    /**
-     * @param \Sofa\Revisionable\UserProvider $userProvider
-     * @param \Sofa\Revisionable\Logger       $logger
-     */
-    public function __construct(UserProvider $userProvider)
+    public function __construct(protected UserProvider $userProvider)
     {
-        $this->userProvider = $userProvider;
     }
 
     /**
